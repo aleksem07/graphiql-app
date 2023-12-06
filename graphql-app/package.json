@@ -9,7 +9,7 @@
     "lint": "next lint",
     "lint:fix": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0 --fix",
     "prettier-fix": "prettier . --write",
-    "prepare": "husky install",
+    "prepare": "cd .. && husky install graphql-app/.husky",
     "test": "jest",
     "coverage": "jest --coverage"
   },
