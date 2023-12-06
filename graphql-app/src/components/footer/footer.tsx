@@ -6,8 +6,12 @@ export default function Footer() {
       <div className="container mx-auto text-center">
         <p>&copy; {new Date().getFullYear()} All Rights Reserved.</p>
         <nav className="mt-2">
-          <Link href="#" className="inline-block mx-2 hover:text-gray-300">RS School</Link>
-          <Link href="#" className="inline-block mx-2 hover:text-gray-300">GitHub</Link>
+          <Link href="#" className="inline-block mx-2 hover:text-gray-300">
+            RS School
+          </Link>
+          <Link href="#" className="inline-block mx-2 hover:text-gray-300">
+            GitHub
+          </Link>
         </nav>
       </div>
     </footer>
