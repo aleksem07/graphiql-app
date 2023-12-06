@@ -2,7 +2,7 @@ import Link from 'next/link';
 
 export default function Footer() {
   return (
-    <footer className="bg-gray-800 p-4 text-center">
+    <footer className="bg-gray-800 text-white p-4 text-center">
       <div className="container mx-auto text-center">
         <p>&copy; {new Date().getFullYear()} All Rights Reserved.</p>
         <nav className="mt-2">
