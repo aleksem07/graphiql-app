@@ -24,7 +24,7 @@ export const validationSchemaSignUp = object().shape({
     .required(),
 });
 
-export type ValidationDataignUp = InferType<typeof validationSchemaSignUp>;
+export type ValidationDataSignUp = InferType<typeof validationSchemaSignUp>;
 
 export const validationSchemaSignIn = object().shape({
   email: string().required().email(),

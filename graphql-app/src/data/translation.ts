@@ -17,6 +17,12 @@ const translation = {
       ru: 'Сброс',
     },
   },
+  error: {
+    defaultError: {
+      en: 'Error occurred. Please try again.',
+      ru: 'Произошла ошибка. Пожалуйста, попробуйте еще раз.',
+    },
+  },
   auth: {
     email: {
       en: 'Email',
@@ -57,6 +63,10 @@ const translation = {
     dontHaveAccount: {
       en: "Don't have an account?",
       ru: 'Нет аккаунта?',
+    },
+    alreadyHaveAccount: {
+      en: 'Already have an account?',
+      ru: 'Уже есть аккаунт?',
     },
   },
 };
