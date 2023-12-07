@@ -38,3 +38,9 @@ export const validationSchemaSignIn = object().shape({
 });
 
 export type ValidationDataSignIn = InferType<typeof validationSchemaSignIn>;
+
+export const validationSchemaReset = object().shape({
+  email: string().required().email(),
+});
+
+export type ValidationDataReset = InferType<typeof validationSchemaReset>;

@@ -41,15 +41,11 @@ const translation = {
       ru: 'Подтвердите пароль',
     },
     resetPassword: {
-      en: 'Reset Password',
-      ru: 'Сброс пароля',
-    },
-    sendResetLink: {
-      en: 'Send Reset Link',
+      en: 'Send password reset email',
       ru: 'Отправить ссылку для сброса пароля',
     },
     resetLinkSent: {
-      en: 'Reset Link Sent',
+      en: 'Password reset link sent',
       ru: 'Ссылка для сброса пароля отправлена',
     },
     emailNotFound: {
