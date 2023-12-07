@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useAuthState } from 'react-firebase-hooks/auth';
@@ -17,7 +17,7 @@ export default function SignUp() {
     register,
     watch,
     handleSubmit,
-    formState: { errors, isValid, isSubmitSuccessful },
+    formState: { errors, isValid },
   } = useForm({
     resolver: yupResolver(validationSchemaSignUp),
     mode: 'onChange',
@@ -35,8 +35,6 @@ export default function SignUp() {
   const submitForm = async (data: ValidationDataSignUp) => {
     await registerWithEmailAndPassword(data.userName, data.email, data.password)
       .then((res: unknown) => {
-        if (loading) return;
-        if (isSubmitSuccessful && user) router.push('/');
         if (res instanceof Error) throw new Error(res.message);
       })
       .catch((err) => {
@@ -44,10 +42,10 @@ export default function SignUp() {
       });
   };
 
-  // useEffect(() => {
-  //   if (loading) return;
-  //   if (user) router.replace('/');
-  // }, [user, loading]);
+  useEffect(() => {
+    if (loading) return;
+    if (user) router.replace('/');
+  }, [user, loading]);
 
   watch(['userName', 'email', 'password', 'confirmPassword']);
 

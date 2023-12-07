@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useAuthState } from 'react-firebase-hooks/auth';
@@ -17,7 +17,7 @@ export default function SignIn() {
     register,
     watch,
     handleSubmit,
-    formState: { errors, isValid, isSubmitSuccessful },
+    formState: { errors, isValid },
   } = useForm({
     resolver: yupResolver(validationSchemaSignIn),
     mode: 'onChange',
@@ -34,8 +34,6 @@ export default function SignIn() {
   const submitForm = async (data: ValidationDataSignIn) => {
     await logInWithEmailAndPassword(data.email, data.password)
       .then((res: unknown) => {
-        if (loading) return;
-        if (isSubmitSuccessful && user) router.push('/');
         if (res instanceof Error) throw new Error(res.message);
       })
       .catch((err) => {
@@ -44,6 +42,11 @@ export default function SignIn() {
       });
   };
   watch(['email', 'password']);
+
+  useEffect(() => {
+    if (loading) return;
+    if (user) router.replace('/');
+  }, [user, loading]);
 
   return (
     <div className="min-h-screen flex items-center justify-center">
