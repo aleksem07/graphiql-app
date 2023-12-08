@@ -6,12 +6,12 @@ import { useRouter } from 'next/navigation';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth, registerWithEmailAndPassword } from '../../firebase';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { ValidationDataSignUp, validationSchemaSignUp } from '@/helpers/validations/schema';
+import { ValidationDataSignUp, validationSchemaSignUp } from '@/common/validations/schema';
 import { useForm } from 'react-hook-form';
-import translation from '@/data/translation';
+import translation from '@/common/translation';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-regular-svg-icons';
-import { AppRoutes } from '@/const/routes';
+import { AppRoutes } from '@/common/routes';
 
 export default function SignupForm() {
   const {

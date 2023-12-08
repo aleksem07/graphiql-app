@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import translation from '@/data/translation';
+import translation from '@/common/translation';
 import ResetPassword from './resetForm';
 
 export const metadata: Metadata = {

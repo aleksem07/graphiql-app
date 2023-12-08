@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import SignInForm from './signinForm';
-import translation from '@/data/translation';
+import translation from '@/common/translation';
 
 export const metadata: Metadata = {
   title: 'Sign In - Graphql playground',

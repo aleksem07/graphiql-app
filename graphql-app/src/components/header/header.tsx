@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { AppRoutes } from '@/const/routes';
+import { AppRoutes } from '@/common/routes';
 
 export default function Header() {
   return (

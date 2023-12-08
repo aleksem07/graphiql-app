@@ -8,10 +8,10 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-regular-svg-icons';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { auth, logInWithEmailAndPassword } from '../../firebase';
-import translation from '@/data/translation';
-import { ValidationDataSignIn, validationSchemaSignIn } from '@/helpers/validations/schema';
+import translation from '@/common/translation';
+import { ValidationDataSignIn, validationSchemaSignIn } from '@/common/validations/schema';
 import { useForm } from 'react-hook-form';
-import { AppRoutes } from '@/const/routes';
+import { AppRoutes } from '@/common/routes';
 
 export default function SignInForm() {
   const {

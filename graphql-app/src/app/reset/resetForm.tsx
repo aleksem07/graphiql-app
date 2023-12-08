@@ -7,9 +7,9 @@ import { useRouter } from 'next/navigation';
 import { auth, sendPasswordReset } from '../../firebase';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { ValidationDataReset, validationSchemaReset } from '@/helpers/validations/schema';
-import translation from '@/data/translation';
-import { AppRoutes } from '@/const/routes';
+import { ValidationDataReset, validationSchemaReset } from '@/common/validations/schema';
+import translation from '@/common/translation';
+import { AppRoutes } from '@/common/routes';
 
 export default function ResetPassword() {
   const {
