@@ -12,6 +12,8 @@ import translation from '@/common/translation';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-regular-svg-icons';
 import { AppRoutes } from '@/common/routes';
+import { setIsSignedIn } from '@/redux/user/userSlice';
+import { useAppDispatch } from '@/redux/hooks';
 
 export default function SignupForm() {
   const {
@@ -28,7 +30,7 @@ export default function SignupForm() {
   const [showPassword, setShowPassword] = useState(false);
   const [showPasswordConfirmation, setShowPasswordConfirmation] = useState(false);
   const [user, loading] = useAuthState(auth);
-
+  const dispatch = useAppDispatch();
   const router = useRouter();
 
   const language = 'en';
@@ -45,7 +47,10 @@ export default function SignupForm() {
 
   useEffect(() => {
     if (loading) return;
-    if (user) router.replace('/');
+    if (user) {
+      dispatch(setIsSignedIn(true));
+      router.replace('/');
+    }
   }, [user, loading]);
 
   watch(['userName', 'email', 'password', 'confirmPassword']);

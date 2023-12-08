@@ -5,8 +5,9 @@ import {
   createUserWithEmailAndPassword,
   sendPasswordResetEmail,
   signOut,
+  User,
 } from 'firebase/auth';
-import { getFirestore, collection, addDoc } from 'firebase/firestore';
+import { getFirestore, collection, addDoc, query, where, getDocs } from 'firebase/firestore';
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_ENV_apiKey,
@@ -60,6 +61,17 @@ const sendPasswordReset = async (email: string): Promise<void | Error> => {
   }
 };
 
+const fetchUserName = async (user: User): Promise<string | Error> => {
+  try {
+    const q = query(collection(db, 'users'), where('uid', '==', user?.uid));
+    const doc = await getDocs(q);
+    const data = doc.docs[0].data();
+    return data.name;
+  } catch (err) {
+    return new Error(`Error in fetching user name: ${err}`);
+  }
+};
+
 const logout = (): void => {
   signOut(auth);
 };
@@ -70,5 +82,6 @@ export {
   logInWithEmailAndPassword,
   registerWithEmailAndPassword,
   sendPasswordReset,
+  fetchUserName,
   logout,
 };

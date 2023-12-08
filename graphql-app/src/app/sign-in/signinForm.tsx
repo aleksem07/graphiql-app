@@ -12,6 +12,8 @@ import translation from '@/common/translation';
 import { ValidationDataSignIn, validationSchemaSignIn } from '@/common/validations/schema';
 import { useForm } from 'react-hook-form';
 import { AppRoutes } from '@/common/routes';
+import { useAppDispatch } from '@/redux/hooks';
+import { setIsSignedIn } from '@/redux/user/userSlice';
 
 export default function SignInForm() {
   const {
@@ -27,6 +29,7 @@ export default function SignInForm() {
   const [errorInSignIn, setErrorInSignIn] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [user, loading] = useAuthState(auth);
+  const dispatch = useAppDispatch();
 
   const router = useRouter();
 
@@ -46,7 +49,10 @@ export default function SignInForm() {
 
   useEffect(() => {
     if (loading) return;
-    if (user) router.replace('/');
+    if (user) {
+      dispatch(setIsSignedIn(true));
+      router.replace('/');
+    }
   }, [user, loading]);
   return (
     <form

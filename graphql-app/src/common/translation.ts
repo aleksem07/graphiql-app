@@ -1,4 +1,10 @@
 const translation = {
+  header: {
+    greeting: {
+      en: 'Hello, ',
+      ru: 'Привет, ',
+    },
+  },
   buttons: {
     signIn: {
       en: 'Sign In',
