@@ -1,13 +1,19 @@
 import type { Metadata } from 'next';
+import SignupForm from './signupForm';
+import translation from '@/data/translation';
 
 export const metadata: Metadata = {
   title: 'Sign Up - Graphql playground',
 };
 
 export default function SignUpPage() {
+  //TODO get user language
+  const language = 'en';
+
   return (
-    <main className="flex-1 flex items-center justify-center">
-      <h1>Sign Up page</h1>
+    <main className="flex-1 flex flex-col items-center justify-center">
+      <h1 className="mb-4">{translation.buttons.signUp[language]}</h1>
+      <SignupForm />
     </main>
   );
 }

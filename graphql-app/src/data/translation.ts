@@ -13,8 +13,8 @@ const translation = {
       ru: 'Выход',
     },
     reset: {
-      en: 'Reset',
-      ru: 'Сброс',
+      en: 'Reset password',
+      ru: 'Сброс пароля',
     },
   },
   error: {

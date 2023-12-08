@@ -22,15 +22,22 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-const logInWithEmailAndPassword = async (email, password) => {
+const logInWithEmailAndPassword = async (
+  email: string,
+  password: string
+): Promise<void | Error> => {
   try {
     await signInWithEmailAndPassword(auth, email, password);
   } catch (err) {
-    return err;
+    if (err instanceof Error) return err;
   }
 };
 
-const registerWithEmailAndPassword = async (name, email, password) => {
+const registerWithEmailAndPassword = async (
+  name: string,
+  email: string,
+  password: string
+): Promise<void | Error> => {
   try {
     const res = await createUserWithEmailAndPassword(auth, email, password);
     const user = res.user;
@@ -41,21 +48,19 @@ const registerWithEmailAndPassword = async (name, email, password) => {
       email,
     });
   } catch (err) {
-    console.error(err);
-    return err;
+    if (err instanceof Error) return err;
   }
 };
 
-const sendPasswordReset = async (email) => {
+const sendPasswordReset = async (email: string): Promise<void | Error> => {
   try {
     await sendPasswordResetEmail(auth, email);
   } catch (err) {
-    console.error(err);
-    return err;
+    if (err instanceof Error) return err;
   }
 };
 
-const logout = () => {
+const logout = (): void => {
   signOut(auth);
 };
 
