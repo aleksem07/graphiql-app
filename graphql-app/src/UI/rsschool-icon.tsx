@@ -5,8 +5,8 @@ export default function RsSchoolIcon({ className }: { className: string }) {
       id="Layer_1"
       xmlns="http://www.w3.org/2000/svg"
       xmlnsXlink="http://www.w3.org/1999/xlink"
-      width={40}
-      height={40}
+      width={60}
+      height={30}
       viewBox="0 0 552.8 205.3"
     >
       <style>
