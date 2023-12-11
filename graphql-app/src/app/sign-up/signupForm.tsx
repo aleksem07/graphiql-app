@@ -87,12 +87,12 @@ export default function SignupForm() {
           onFocus={() => setErrorInSignUp('')}
           {...register('password', { required: true })}
         />
-        <button
+        <span
           className="absolute top-1 right-0 mt-2 mr-2 text-sm text-gray-600 cursor-pointer"
           onClick={() => setShowPassword(!showPassword)}
         >
           {showPassword ? <FontAwesomeIcon icon={faEyeSlash} /> : <FontAwesomeIcon icon={faEye} />}
-        </button>
+        </span>
       </div>
       <p className="text-red-500 text-xs mb-1 text-left h-4">{errors.password?.message}</p>
 
