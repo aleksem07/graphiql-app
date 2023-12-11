@@ -6,17 +6,18 @@ import { RootState } from '@/redux/store';
 import translation from '@/common/translation';
 import { logout } from '@/firebase';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
-import { setIsSignedIn } from '@/redux/user/userSlice';
+import { removeUser } from '@/redux/user/userSlice';
 
 export default function Header() {
   const isUserSignedIn: boolean = useAppSelector((state: RootState) => state.userSlice.isSignedIn);
+  const userEmail: string | null = useAppSelector((state: RootState) => state.userSlice.email);
   const dispatch = useAppDispatch();
 
   const language = 'en';
 
   const handleLogout = () => {
     logout();
-    dispatch(setIsSignedIn(false));
+    dispatch(removeUser());
   };
 
   return (
@@ -37,7 +38,18 @@ export default function Header() {
             </>
           )}
           {isUserSignedIn && (
-            <button onClick={handleLogout}>{translation.buttons.logout[language]}</button>
+            <>
+              <span className="text-xs">
+                {translation.header.loggedInAs[language]}
+                {userEmail}
+              </span>
+              <Link href={AppRoutes.GRAPHQL} className="hover:text-gray-300">
+                {translation.buttons.toGraphqlPage[language]}
+              </Link>
+              <button onClick={handleLogout} className="hover:text-gray-300">
+                {translation.buttons.logout[language]}
+              </button>
+            </>
           )}
         </nav>
       </div>

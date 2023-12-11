@@ -13,7 +13,7 @@ import { ValidationDataSignIn, validationSchemaSignIn } from '@/common/validatio
 import { useForm } from 'react-hook-form';
 import { AppRoutes } from '@/common/routes';
 import { useAppDispatch } from '@/redux/hooks';
-import { setIsSignedIn } from '@/redux/user/userSlice';
+import { setUser } from '@/redux/user/userSlice';
 
 export default function SignInForm() {
   const {
@@ -50,7 +50,7 @@ export default function SignInForm() {
   useEffect(() => {
     if (loading) return;
     if (user) {
-      dispatch(setIsSignedIn(true));
+      dispatch(setUser({ isSignedIn: true, email: user.email }));
       router.replace('/');
     }
   }, [user, loading]);

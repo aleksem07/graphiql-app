@@ -12,7 +12,7 @@ import translation from '@/common/translation';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-regular-svg-icons';
 import { AppRoutes } from '@/common/routes';
-import { setIsSignedIn } from '@/redux/user/userSlice';
+import { setUser } from '@/redux/user/userSlice';
 import { useAppDispatch } from '@/redux/hooks';
 
 export default function SignupForm() {
@@ -48,7 +48,7 @@ export default function SignupForm() {
   useEffect(() => {
     if (loading) return;
     if (user) {
-      dispatch(setIsSignedIn(true));
+      dispatch(setUser({ isSignedIn: true, email: user.email }));
       router.replace('/');
     }
   }, [user, loading]);

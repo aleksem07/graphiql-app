@@ -1,8 +1,8 @@
 const translation = {
   header: {
-    greeting: {
-      en: 'Hello, ',
-      ru: 'Привет, ',
+    loggedInAs: {
+      en: 'You are logged in as: ',
+      ru: 'Вы вошли как: ',
     },
   },
   buttons: {
@@ -21,6 +21,10 @@ const translation = {
     reset: {
       en: 'Reset password',
       ru: 'Сброс пароля',
+    },
+    toGraphqlPage: {
+      en: 'Go to playground',
+      ru: 'Перейти в песочницу',
     },
   },
   error: {
