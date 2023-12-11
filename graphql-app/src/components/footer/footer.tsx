@@ -1,18 +1,26 @@
 import Link from 'next/link';
+import GitHubIcon from '@/UI/github-icon';
+import RsSchoolIcon from '@/UI/rsschool-icon';
 
 export default function Footer() {
   return (
-    <footer className="bg-gray-800 text-white p-4 text-center">
-      <div className="container mx-auto text-center">
-        <p>&copy; {new Date().getFullYear()} All Rights Reserved.</p>
-        <nav className="mt-2">
-          <Link href="#" className="inline-block mx-2 hover:text-gray-300">
-            RS School
+    <footer className="bg-gray-800 text-white p-2 text-center" data-testid="footer">
+      <div className="flex justify-between items-center container mx-auto text-center">
+        <Link href="https://rs.school/react/" className="inline-block mx-2" target="_blank">
+          <RsSchoolIcon className="text-white hover:text-gray-500" />
+        </Link>
+        <nav className="flex justify-center nav-links">
+          <Link href="https://github.com/irinaosp" className="inline-block mx-2" target="_blank">
+            <GitHubIcon className="text-white hover:text-gray-500" />
           </Link>
-          <Link href="#" className="inline-block mx-2 hover:text-gray-300">
-            GitHub
+          <Link href="https://github.com/juliaavona" className="inline-block mx-2" target="_blank">
+            <GitHubIcon className="text-white hover:text-gray-500" />
+          </Link>
+          <Link href="https://github.com/aleksem07" className="inline-block mx-2" target="_blank">
+            <GitHubIcon className="text-white hover:text-gray-500" />
           </Link>
         </nav>
+        <p className="font-bold cursor-default">2023</p>
       </div>
     </footer>
   );
