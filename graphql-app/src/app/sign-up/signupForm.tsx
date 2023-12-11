@@ -49,7 +49,7 @@ export default function SignupForm() {
     if (loading) return;
     if (user) {
       dispatch(setUser({ isSignedIn: true, email: user.email }));
-      router.replace('/');
+      router.replace(AppRoutes.GRAPHQL);
     }
   }, [user, loading]);
 
@@ -104,7 +104,7 @@ export default function SignupForm() {
           onFocus={() => setErrorInSignUp('')}
           {...register('confirmPassword', { required: true })}
         />
-        <button
+        <span
           className="absolute top-1 right-0 mt-2 mr-2 text-sm text-gray-600 cursor-pointer"
           onClick={() => setShowPasswordConfirmation(!showPasswordConfirmation)}
         >
@@ -113,7 +113,7 @@ export default function SignupForm() {
           ) : (
             <FontAwesomeIcon icon={faEye} />
           )}
-        </button>
+        </span>
       </div>
       <p className="text-red-500 text-xs mb-1 text-left h-4">{errors.confirmPassword?.message}</p>
 

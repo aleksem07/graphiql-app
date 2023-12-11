@@ -51,7 +51,7 @@ export default function SignInForm() {
     if (loading) return;
     if (user) {
       dispatch(setUser({ isSignedIn: true, email: user.email }));
-      router.replace('/');
+      router.replace(AppRoutes.GRAPHQL);
     }
   }, [user, loading]);
   return (
