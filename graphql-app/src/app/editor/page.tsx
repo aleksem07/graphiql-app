@@ -27,10 +27,10 @@ export default function EditorPage() {
     });
   };
 
-    const handleCustomApiChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-      if (isCustomApi) {
-        setApi(event.target.value);
-      }
+  const handleCustomApiChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (isCustomApi) {
+      setApi(event.target.value);
+    }
   };
 
   const handleApiChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
