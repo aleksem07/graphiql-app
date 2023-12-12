@@ -25,6 +25,25 @@ export default function EditorPage() {
     editor.addCommand(monaco.KeyCode.Escape, () => {
       setQuery('');
     });
+    monaco.languages.registerCompletionItemProvider('graphql', {
+      provideCompletionItems: () => {
+        const suggestions = [
+          {
+            label: 'getCharacterNameFromRickAndMorty',
+            kind: monaco.languages.CompletionItemKind.Keyword,
+            insertText: 'query {\n\tcharacters {\n\t\tresults {\n\t\t\tname\n\t\t}\n\t}\n}',
+            range: {
+              startLineNumber: 1,
+              endLineNumber: 1,
+              startColumn: 1,
+              endColumn: 1,
+            },
+          },
+        ];
+
+        return { suggestions };
+      },
+    });
   };
 
   const handleCustomApiChange = (event: React.ChangeEvent<HTMLInputElement>) => {
