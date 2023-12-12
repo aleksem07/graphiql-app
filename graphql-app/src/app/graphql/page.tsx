@@ -5,15 +5,28 @@ import * as Monaco from 'monaco-editor/esm/vs/editor/editor.api';
 
 export default function EditorPage() {
   const editorRef = useRef<Monaco.editor.IStandaloneCodeEditor | null>(null);
-  const API_LIST = {
-    POKEMON: 'https://graphql-pokemon2.vercel.app/api',
-    STARWARS: 'https://swapi-graphql.netlify.app/.netlify/functions/index',
-    RICK_AND_MORTY: 'https://rickandmortyapi.com/graphql',
-    CUSTOM: '',
-  };
+  const API_OPTIONS = [
+    {
+      label: 'Custom API',
+      value: '',
+    },
+    {
+      label: 'Rick and Morty',
+      value: 'https://rickandmortyapi.com/graphql',
+    },
+    {
+      label: 'Star Wars',
+      value: 'https://swapi-graphql.netlify.app/.netlify/functions/index',
+    },
+    {
+      label: 'Pokemon',
+      value: 'https://graphql-pokemon2.vercel.app/api',
+    },
+  ];
+
   const [query, setQuery] = useState('');
   const [response, setResponse] = useState('');
-  const [api, setApi] = useState(API_LIST.CUSTOM);
+  const [api, setApi] = useState('');
   const [isCustomApi, setIsCustomApi] = useState(true);
 
   const handleEditorDidMount: OnMount = (editor, monaco) => {
@@ -54,7 +67,7 @@ export default function EditorPage() {
 
   const handleApiChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedApi = event.target.value;
-    if (selectedApi === API_LIST.CUSTOM) {
+    if (selectedApi === '') {
       setIsCustomApi(true);
       setApi('');
     } else {
@@ -100,10 +113,11 @@ export default function EditorPage() {
           onChange={handleApiChange}
           value={api}
         >
-          <option value={API_LIST.CUSTOM}>Custom API</option>
-          <option value={API_LIST.RICK_AND_MORTY}>Rick and Morty</option>
-          <option value={API_LIST.STARWARS}>Star Wars</option>
-          <option value={API_LIST.POKEMON}>Pokemon</option>
+          {API_OPTIONS.map(({ label, value }) => (
+            <option key={value} value={value}>
+              {label}
+            </option>
+          ))}
         </select>
         {isCustomApi && (
           <input
