@@ -21,7 +21,7 @@ export default function Header() {
   };
 
   return (
-    <header className="bg-gray-800 text-white p-4">
+    <header className="bg-gray-800 text-white p-2" data-testid="header">
       <div className="container mx-auto flex justify-between items-center">
         <Link href={AppRoutes.HOME} className="text-2xl font-bold">
           Logo
