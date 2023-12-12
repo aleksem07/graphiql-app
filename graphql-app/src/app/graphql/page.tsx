@@ -98,7 +98,7 @@ export default function EditorPage() {
       </div>
 
       <div className="grid grid-cols-2 w-full flex-1 gap-2">
-        <div className="flex-1 flex-col">
+        <div className="flex-1">
           <Editor
             height="60vh"
             language="graphql"
