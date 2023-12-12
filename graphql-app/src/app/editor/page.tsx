@@ -9,10 +9,12 @@ export default function EditorPage() {
     POKEMON: 'https://graphql-pokemon2.vercel.app/api',
     STARWARS: 'https://swapi-graphql.netlify.app/.netlify/functions/index',
     RICK_AND_MORTY: 'https://rickandmortyapi.com/graphql',
+    CUSTOM: '',
   };
   const [query, setQuery] = useState('');
   const [response, setResponse] = useState('');
-  const [api, setApi] = useState(API_LIST.RICK_AND_MORTY);
+  const [api, setApi] = useState(API_LIST.CUSTOM);
+  const [isCustomApi, setIsCustomApi] = useState(true);
 
   const handleEditorDidMount: OnMount = (editor, monaco) => {
     editorRef.current = editor;
@@ -25,8 +27,21 @@ export default function EditorPage() {
     });
   };
 
+    const handleCustomApiChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+      if (isCustomApi) {
+        setApi(event.target.value);
+      }
+  };
+
   const handleApiChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setApi(event.target.value);
+    const selectedApi = event.target.value;
+    if (selectedApi === API_LIST.CUSTOM) {
+      setIsCustomApi(true);
+      setApi('');
+    } else {
+      setIsCustomApi(false);
+      setApi(selectedApi);
+    }
   };
 
   const handleEditorChange = (value: string | undefined) => {
@@ -66,18 +81,27 @@ export default function EditorPage() {
           onChange={handleApiChange}
           value={api}
         >
+          <option value={API_LIST.CUSTOM}>Custom API</option>
           <option value={API_LIST.RICK_AND_MORTY}>Rick and Morty</option>
           <option value={API_LIST.STARWARS}>Star Wars</option>
           <option value={API_LIST.POKEMON}>Pokemon</option>
-          <option value="">Other...</option>
         </select>
+        {isCustomApi && (
+          <input
+            className="w-full border border-gray-300 rounded p-2 text-black mt-2"
+            type="text"
+            placeholder="Enter Custom API URL"
+            value={api}
+            onChange={handleCustomApiChange}
+          />
+        )}
       </div>
 
       <div className="grid grid-cols-2 w-full flex-1 gap-2">
         <div className="flex-1 flex-col">
           <Editor
-            height="50vh"
-            defaultLanguage="graphql"
+            height="60vh"
+            language="graphql"
             className="flex-1 border border-gray-300 rounded p-2 text-black"
             value={query}
             onChange={handleEditorChange}
@@ -90,7 +114,7 @@ export default function EditorPage() {
           />
 
           <button
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4"
             onClick={executeQuery}
           >
             Execute Query
