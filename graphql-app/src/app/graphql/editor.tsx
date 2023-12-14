@@ -1,28 +1,14 @@
 'use client';
-import { useState, useRef } from 'react';
-import Editor, { OnMount } from '@monaco-editor/react';
-import * as Monaco from 'monaco-editor/esm/vs/editor/editor.api';
-import { Suggestions } from './suggestions';
+import { useState } from 'react';
+import AceEditor from 'react-ace';
+import 'ace-builds/src-noconflict/mode-graphqlschema';
 import { API_OPTIONS } from '@/common/api-path';
 
 export const EditorQraphqlRequest = () => {
-  const editorRef = useRef<Monaco.editor.IStandaloneCodeEditor | null>(null);
   const [query, setQuery] = useState('');
   const [response, setResponse] = useState('');
   const [api, setApi] = useState('');
   const [isCustomApi, setIsCustomApi] = useState(true);
-
-  const handleEditorDidMount: OnMount = (editor, monaco) => {
-    editorRef.current = editor;
-    editor.focus();
-    editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.Enter, () => {
-      executeQuery();
-    });
-    editor.addCommand(monaco.KeyCode.Escape, () => {
-      setQuery('');
-    });
-    Suggestions(monaco);
-  };
 
   const handleCustomApiChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (isCustomApi) {
@@ -50,18 +36,13 @@ export const EditorQraphqlRequest = () => {
   };
 
   const executeQuery = async () => {
-    if (!editorRef.current) {
-      return;
-    }
-
     try {
-      const queryValue = editorRef.current.getValue();
       const response = await fetch(api, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ query: queryValue }),
+        body: JSON.stringify({ query }),
       });
       const data = await response.json();
       setResponse(JSON.stringify(data, null, 2));
@@ -72,7 +53,7 @@ export const EditorQraphqlRequest = () => {
 
   return (
     <>
-      <div className="w-full">
+      <div className="w-full my-2" data-testid="api-select">
         <select
           className="w-full border border-gray-300 rounded p-2 text-black"
           onChange={handleApiChange}
@@ -96,30 +77,32 @@ export const EditorQraphqlRequest = () => {
       </div>
 
       <div className="grid grid-cols-2 w-full flex-1 gap-2">
-        <div className="flex-1">
-          <Editor
+        <div className="flex-1" data-testid="editor">
+          <AceEditor
+            fontSize={14}
+            setOptions={{
+              showLineNumbers: true,
+              tabSize: 2,
+            }}
+            placeholder="Enter GraphQL query here"
+            width="100%"
             height="60vh"
-            language="graphql"
+            mode="graphqlschema"
             className="flex-1 border border-gray-300 rounded p-2 text-black"
             value={query}
             onChange={handleEditorChange}
-            onMount={handleEditorDidMount}
-            options={{
-              minimap: {
-                enabled: false,
-              },
-            }}
           />
 
           <button
             className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4"
             onClick={executeQuery}
+            data-testid="execute-button"
           >
             Execute Query
           </button>
         </div>
 
-        <div className="flex-1 p-2 bg-gray-200 rounded">
+        <div className="flex-1 p-2 bg-gray-200 rounded" data-testid="response">
           <pre className="whitespace-pre-wrap">{response}</pre>
         </div>
       </div>

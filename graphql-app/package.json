@@ -14,7 +14,6 @@
     "coverage": "jest --coverage"
   },
   "dependencies": {
-    "@monaco-editor/react": "^4.6.0",
     "@fortawesome/fontawesome-svg-core": "^6.5.1",
     "@fortawesome/free-regular-svg-icons": "^6.5.1",
     "@fortawesome/react-fontawesome": "^0.2.0",
@@ -23,6 +22,7 @@
     "firebase": "^10.7.1",
     "next": "14.0.3",
     "react": "^18",
+    "react-ace": "^10.1.0",
     "react-dom": "^18",
     "react-firebase-hooks": "^5.1.1",
     "react-hook-form": "^7.48.2",
