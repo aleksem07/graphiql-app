@@ -1,6 +1,7 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import SignInForm from '../../../app/sign-in/signinForm';
 import { logInWithEmailAndPassword } from '@/firebase';
+import { AppRoutes } from '@/common/routes';
 
 jest.mock('next/navigation');
 
@@ -32,6 +33,20 @@ describe('SignInForm', () => {
   it('renders SignInForm correctly', () => {
     const { container } = render(<SignInForm />);
     expect(container).toMatchSnapshot();
+  });
+
+  it('toggles password visibility when eye icon is clicked', () => {
+    render(<SignInForm />);
+    const passwordInput = screen.getByPlaceholderText(/password/i);
+    const eyeIcon = screen.getByTestId('eye-icon');
+
+    expect(passwordInput).toHaveAttribute('type', 'password');
+
+    fireEvent.click(eyeIcon);
+    expect(passwordInput).toHaveAttribute('type', 'text');
+
+    fireEvent.click(eyeIcon);
+    expect(passwordInput).toHaveAttribute('type', 'password');
   });
 
   it('submits the form with valid data', async () => {
@@ -76,6 +91,23 @@ describe('SignInForm', () => {
       expect(submitButton).toBeDisabled();
       const errorText = screen.getByText(/Password must contain a number/i);
       expect(errorText).toBeInTheDocument();
+    });
+  });
+
+  it('redirects to graphql page if user is signed in', async () => {
+    const mockReplace = jest.fn();
+    jest
+      .spyOn(require('next/navigation'), 'useRouter')
+      .mockReturnValueOnce({ replace: mockReplace });
+
+    jest
+      .spyOn(require('react-firebase-hooks/auth'), 'useAuthState')
+      .mockReturnValueOnce([{ email: 'test@example.com' }, false]);
+
+    render(<SignInForm />);
+
+    await waitFor(() => {
+      expect(mockReplace).toHaveBeenCalledWith(AppRoutes.GRAPHQL);
     });
   });
 });

@@ -1,5 +1,6 @@
-import { render, screen } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import NavLinks from '@/components/navLinks/navLinks';
+import { logout } from '@/firebase';
 
 jest.mock('next/navigation', () => ({
   useRouter: () => ({ push: jest.fn() }),
@@ -55,5 +56,20 @@ describe('NavLinks', () => {
     expect(loggedInAsText).toBeInTheDocument();
     expect(graphqlLink).toBeInTheDocument();
     expect(logoutButton).toBeInTheDocument();
+  });
+
+  it('calls logout and redirects to HOME on handleLogout', async () => {
+    const mockPush = jest.fn();
+    jest.spyOn(require('next/navigation'), 'useRouter').mockReturnValueOnce({ push: mockPush });
+
+    render(<NavLinks />);
+
+    const logoutButton = screen.getByText(/logout/i);
+    fireEvent.click(logoutButton);
+    expect(logout).toHaveBeenCalled();
+
+    await waitFor(() => {
+      expect(mockPush).toHaveBeenCalledWith('/');
+    });
   });
 });

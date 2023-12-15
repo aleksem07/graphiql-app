@@ -1,6 +1,7 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import SignUpForm from '../../../app/sign-up/signupForm';
 import { registerWithEmailAndPassword } from '@/firebase';
+import { AppRoutes } from '@/common/routes';
 
 jest.mock('next/navigation');
 
@@ -98,6 +99,49 @@ describe('SignUpForm', () => {
     await waitFor(() => {
       const errorText = screen.getByText(/Passwords must match/i);
       expect(errorText).toBeInTheDocument();
+    });
+  });
+
+  it('toggles password visibility when eye icon is clicked', () => {
+    render(<SignUpForm />);
+    const passwordInputs = screen.getAllByPlaceholderText(/password/i);
+    const eyeIcons = screen.getAllByTestId('eye-icon');
+
+    passwordInputs.forEach((passwordInput) => {
+      expect(passwordInput).toHaveAttribute('type', 'password');
+    });
+
+    eyeIcons.forEach((eyeIcon) => {
+      fireEvent.click(eyeIcon);
+    });
+
+    passwordInputs.forEach((passwordInput) => {
+      expect(passwordInput).toHaveAttribute('type', 'text');
+    });
+
+    eyeIcons.forEach((eyeIcon) => {
+      fireEvent.click(eyeIcon);
+    });
+
+    passwordInputs.forEach((passwordInput) => {
+      expect(passwordInput).toHaveAttribute('type', 'password');
+    });
+  });
+
+  it('redirects to HOME on successful sign up', async () => {
+    const mockReplace = jest.fn();
+    jest
+      .spyOn(require('next/navigation'), 'useRouter')
+      .mockReturnValueOnce({ replace: mockReplace });
+
+    jest
+      .spyOn(require('react-firebase-hooks/auth'), 'useAuthState')
+      .mockReturnValueOnce([{ email: 'test@example.com' }, false]);
+
+    render(<SignUpForm />);
+
+    await waitFor(() => {
+      expect(mockReplace).toHaveBeenCalledWith(AppRoutes.GRAPHQL);
     });
   });
 });

@@ -86,6 +86,7 @@ export default function SignupForm() {
         <span
           className="absolute top-1 right-0 mt-2 mr-2 text-sm text-gray-600 cursor-pointer"
           onClick={() => setShowPassword(!showPassword)}
+          data-testid="eye-icon"
         >
           {showPassword ? <FontAwesomeIcon icon={faEyeSlash} /> : <FontAwesomeIcon icon={faEye} />}
         </span>
@@ -103,6 +104,7 @@ export default function SignupForm() {
         <span
           className="absolute top-1 right-0 mt-2 mr-2 text-sm text-gray-600 cursor-pointer"
           onClick={() => setShowPasswordConfirmation(!showPasswordConfirmation)}
+          data-testid="eye-icon"
         >
           {showPasswordConfirmation ? (
             <FontAwesomeIcon icon={faEyeSlash} />

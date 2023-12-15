@@ -35,6 +35,7 @@ exports[`SignUpForm renders SignUpForm correctly 1`] = `
       />
       <span
         class="absolute top-1 right-0 mt-2 mr-2 text-sm text-gray-600 cursor-pointer"
+        data-testid="eye-icon"
       >
         <svg
           aria-hidden="true"
@@ -67,6 +68,7 @@ exports[`SignUpForm renders SignUpForm correctly 1`] = `
       />
       <span
         class="absolute top-1 right-0 mt-2 mr-2 text-sm text-gray-600 cursor-pointer"
+        data-testid="eye-icon"
       >
         <svg
           aria-hidden="true"
