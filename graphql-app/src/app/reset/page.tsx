@@ -1,9 +1,9 @@
 import type { Metadata } from 'next';
-import SignInForm from './signinForm';
 import translation from '@/common/translation';
+import ResetPassword from './resetForm';
 
 export const metadata: Metadata = {
-  title: 'Sign In - Graphql playground',
+  title: 'Reset Password - Graphql playground',
 };
 
 export default function SignInPage() {
@@ -12,8 +12,8 @@ export default function SignInPage() {
 
   return (
     <main className="flex-1 flex flex-col items-center justify-center">
-      <h1 className="mb-4">{translation.buttons.signIn[language]}</h1>
-      <SignInForm />
+      <h1 className="mb-4">{translation.buttons.reset[language]}</h1>
+      <ResetPassword />
     </main>
   );
 }
