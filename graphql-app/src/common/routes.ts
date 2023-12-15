@@ -4,4 +4,5 @@ export enum AppRoutes {
   SING_UP = '/sign-up',
   RESET = './reset',
   GRAPHQL = './graphql',
+  WELCOME = '/welcome',
 }
