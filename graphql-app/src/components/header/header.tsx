@@ -15,9 +15,6 @@ export default function Header() {
           <Link href={AppRoutes.SING_UP} className="hover:text-gray-300">
             Sign Up
           </Link>
-          <Link href={AppRoutes.WELCOME} className="hover:text-gray-300">
-            Welcome page
-          </Link>
         </nav>
       </div>
     </header>
