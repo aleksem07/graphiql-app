@@ -6,7 +6,6 @@ import { API_OPTIONS } from '@/common/api-path';
 import { ToastContainer, toast } from 'react-toastify';
 
 export const EditorQraphqlRequest = () => {
-  const MAX_ERROR_LENGTH = 200;
   const [query, setQuery] = useState('');
   const [getResponse, setResponse] = useState('');
   const [api, setApi] = useState('');
@@ -60,14 +59,12 @@ export const EditorQraphqlRequest = () => {
       });
 
       if (!response.ok) {
+        const data = await response.json();
+        console.log(data.errors.map((error: { message: string }) => error.message));  
         const errorCode = await response.status;
-        const errorStatus = await response.text();
-        const truncatedError =
-          errorStatus.length > MAX_ERROR_LENGTH
-            ? `${errorStatus.substring(0, MAX_ERROR_LENGTH)}...`
-            : errorStatus;
-        toast.error(`Error: status code ${errorCode}\n${truncatedError}`);
-        setResponse('');
+        const errorMessage = data.errors.map((error: { message: string }) => error.message).join(', ');
+        toast.error(`status code ${errorCode}\n${errorMessage}`);
+        setResponse(JSON.stringify(data, null, 2));
         return;
       }
 
