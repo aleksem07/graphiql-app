@@ -26,11 +26,23 @@ const translation = {
       en: 'Go to playground',
       ru: 'Перейти в песочницу',
     },
+    backHome: {
+      en: 'Back to home',
+      ru: 'Вернуться на главную страницу',
+    },
   },
   error: {
     defaultError: {
       en: 'Error occurred. Please try again.',
       ru: 'Произошла ошибка. Пожалуйста, попробуйте еще раз.',
+    },
+    appError: {
+      en: 'Application error occurred. Please try again.',
+      ru: 'Произошла ошибка приложения. Пожалуйста, попробуйте еще раз.',
+    },
+    err404: {
+      en: '404 Page not found',
+      ru: '404 Страница не найдена',
     },
   },
   auth: {
