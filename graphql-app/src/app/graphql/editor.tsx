@@ -41,13 +41,11 @@ export const EditorQraphqlRequest = () => {
       if (!api) {
         toast.error('Please select an API endpoint');
         setResponse('');
-        // return;
       }
 
       if (!query) {
         toast.error('Please enter a query');
         setResponse('');
-        // return;
       }
 
       const response = await fetch(api, {
@@ -60,9 +58,10 @@ export const EditorQraphqlRequest = () => {
 
       if (!response.ok) {
         const data = await response.json();
-        console.log(data.errors.map((error: { message: string }) => error.message));  
         const errorCode = await response.status;
-        const errorMessage = data.errors.map((error: { message: string }) => error.message).join(', ');
+        const errorMessage = data.errors
+          .map((error: { message: string }) => error.message)
+          .join(', ');
         toast.error(`status code ${errorCode}\n${errorMessage}`);
         setResponse(JSON.stringify(data, null, 2));
         return;
