@@ -3,10 +3,11 @@ import { useState } from 'react';
 import AceEditor from 'react-ace';
 import 'ace-builds/src-noconflict/mode-graphqlschema';
 import { API_OPTIONS } from '@/common/api-path';
+import { ToastContainer, toast } from 'react-toastify';
 
 export const EditorQraphqlRequest = () => {
   const [query, setQuery] = useState('');
-  const [response, setResponse] = useState('');
+  const [getResponse, setResponse] = useState('');
   const [api, setApi] = useState('');
   const [isCustomApi, setIsCustomApi] = useState(true);
 
@@ -37,6 +38,16 @@ export const EditorQraphqlRequest = () => {
 
   const executeQuery = async () => {
     try {
+      if (!api) {
+        toast.error('Please select an API endpoint');
+        setResponse('');
+      }
+
+      if (!query) {
+        toast.error('Please enter a query');
+        setResponse('');
+      }
+
       const response = await fetch(api, {
         method: 'POST',
         headers: {
@@ -44,10 +55,30 @@ export const EditorQraphqlRequest = () => {
         },
         body: JSON.stringify({ query }),
       });
-      const data = await response.json();
-      setResponse(JSON.stringify(data, null, 2));
+
+      if (!response.ok) {
+        const data = await response.json();
+        const errorCode = await response.status;
+        const errorMessage = data.errors
+          .map((error: { message: string }) => error.message)
+          .join(', ');
+        toast.error(`status code ${errorCode}\n${errorMessage}`);
+        setResponse(JSON.stringify(data, null, 2));
+        return;
+      }
+
+      if (response.status === 200) {
+        const data = await response.json();
+        setResponse(JSON.stringify(data, null, 2));
+        toast.success('Query executed successfully');
+      }
     } catch (error) {
-      console.error(error);
+      if (error instanceof Error) {
+        toast.error(error.message);
+      } else {
+        toast.error('An unexpected error occurred');
+        console.error(error);
+      }
     }
   };
 
@@ -103,9 +134,10 @@ export const EditorQraphqlRequest = () => {
         </div>
 
         <div className="flex-1 p-2 bg-gray-200 rounded" data-testid="response">
-          <pre className="whitespace-pre-wrap">{response}</pre>
+          <pre className="whitespace-pre-wrap">{getResponse}</pre>
         </div>
       </div>
+      <ToastContainer position="bottom-right" />
     </>
   );
 };

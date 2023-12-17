@@ -55,6 +55,7 @@ describe('EditorQraphqlRequest', () => {
     const executeButton = screen.getByTestId('execute-button');
 
     global.fetch = jest.fn().mockResolvedValue({
+      status: 200,
       json: () => Promise.resolve({ data: 'mocked data' }),
     });
 
@@ -86,20 +87,5 @@ describe('EditorQraphqlRequest', () => {
     } else {
       throw new Error('API Select element not found');
     }
-  });
-
-  it('executes a query when the "Execute Query" button is clicked', async () => {
-    render(<EditorQraphqlRequest />);
-    const executeButton = screen.getByTestId('execute-button');
-
-    global.fetch = jest.fn().mockResolvedValue({
-      json: () => Promise.resolve({ data: 'mocked data' }),
-    });
-
-    fireEvent.click(executeButton);
-
-    await waitFor(() => {
-      expect(global.fetch).toHaveBeenCalled();
-    });
   });
 });
