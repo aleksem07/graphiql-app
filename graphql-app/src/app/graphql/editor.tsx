@@ -4,6 +4,7 @@ import AceEditor from 'react-ace';
 import 'ace-builds/src-noconflict/mode-graphqlschema';
 import { API_OPTIONS } from '@/common/api-path';
 import { ToastContainer, toast } from 'react-toastify';
+import { Prettify } from '@/common/prettify';
 
 export const EditorQraphqlRequest = () => {
   const [query, setQuery] = useState('');
@@ -124,13 +125,16 @@ export const EditorQraphqlRequest = () => {
             onChange={handleEditorChange}
           />
 
-          <button
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4"
-            onClick={executeQuery}
-            data-testid="execute-button"
-          >
-            Execute Query
-          </button>
+          <div className="flex gap-2">
+            <button
+              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4"
+              onClick={executeQuery}
+              data-testid="execute-button"
+            >
+              Execute Query
+            </button>
+            <Prettify query={query} setQuery={setQuery} />
+          </div>
         </div>
 
         <div className="flex-1 p-2 bg-gray-200 rounded" data-testid="response">
