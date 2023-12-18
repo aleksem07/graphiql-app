@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import Image from 'next/image';
 
 export const metadata: Metadata = {
     title: 'Welcome page - Graphql playground',
@@ -22,19 +23,19 @@ const developers: Developer[] = [
         name: 'Irina Osipova',
         githubLink: 'https://github.com/IrinaOsp',
         imageLink: 'https://media.licdn.com/dms/image/D4D35AQGCeIk3IcKmBw/profile-framedphoto-shrink_100_100/0/1700574648660?e=1702875600&v=beta&t=lTiioUC71ZfM6C_xGfG6wPrJb8DZQbVxZF8ved1Kba0',
-        description: 'Motivated and skilled Junior Frontend Developer with a passion for crafting user-friendly web experiences. Possessing a solid foundation in HTML, CSS, and JavaScript, I am eager to contribute my knowledge and learn from experienced professionals to further develop my skills in frontend.'
+        description: 'Junior Frontend Developer with a keen interest in building user-centric web interfaces. Proficient in HTML, CSS, and JavaScript. Dedicated to learning and applying new technologies, I aim to grow professionally in a collaborative environment.'
     },
     {
         name: 'Alexey Semyachkin',
         githubLink: 'https://github.com/aleksem07',
         imageLink: 'https://avatars.githubusercontent.com/u/89778523?v=4',
-        description: 'Frontend developer with a solid foundation in HTML, CSS, and JavaScript. I am eager to contribute my knowledge and learn from experienced professionals to further develop my skills in frontend.'
+        description: 'Frontend developer skilled in HTML, CSS, and JavaScript. Focused on creating engaging web experiences, I bring a strong foundation in web technologies. I am committed to ongoing learning and leveraging my skills in a team setting.',
     },
     {
         name: 'Julia Izbrodina',
         githubLink: 'https://github.com/JuliaAvona',
         imageLink: 'https://avatars.githubusercontent.com/u/94717941?v=4',
-        description: "At the moment I'm studying at The Rolling Scopes School of React."
+        description: 'Currently studying at The Rolling Scopes School of React, I am passionate about frontend development. With a focus on HTML, CSS, and JavaScript, I am eager to apply my knowledge and continue growing in a dynamic professional environment.',
     }
 ];
 
@@ -54,12 +55,22 @@ const sections: SectionInfo[] = [
 const DeveloperCard = ({ developer }: { developer: Developer }) => (
     <div className='m-2'>
         <a href={developer.githubLink} target="_blank" rel="noopener noreferrer">
-            <img src={developer.imageLink} alt={developer.name} className='w-24 h-24 rounded-full mx-auto transition-transform duration-200 hover:scale-105' />
+            <div className='w-24 h-24 rounded-full mx-auto overflow-hidden transition-transform duration-200 hover:scale-105'>
+                <Image
+                    src={developer.imageLink}
+                    alt={developer.name}
+                    width={96}
+                    height={96}
+                    layout='responsive'
+                    className='rounded-full'
+                />
+            </div>
         </a>
         <h4 className='font-bold pt-10'>{developer.name}</h4>
         <p>{developer.description}</p>
     </div>
 );
+
 
 const Section = ({ info }: { info: SectionInfo }) => (
     <div className="flex-1 flex items-center justify-center flex-col m-10 pt-20">
@@ -78,7 +89,7 @@ export default function Welcome() {
                 <div className="flex-1 flex items-start justify-start">
                     <div className="flex-1 flex items-center justify-center flex-col m-10 pt-20">
                         <h2 className="text-2xl font-bold">About Us</h2>
-                        <div className="grid gap-4 grid-cols-3 pt-20">
+                        <div className="grid gap-4 grid-cols-1 pt-20 xs:grid-cols-3">
                             {developers.map(developer => <DeveloperCard key={developer.name} developer={developer} />)}
                         </div>
                     </div>
