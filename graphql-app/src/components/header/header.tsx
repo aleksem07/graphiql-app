@@ -7,7 +7,6 @@ import NavLinks from '../navLinks/navLinks';
 export default function Header() {
   const [isScrolled, setIsScrolled] = useState<boolean>(false);
 
-
   const handleScroll = (): void => {
     setIsScrolled(window.scrollY > 50);
   };
