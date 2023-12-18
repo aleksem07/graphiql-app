@@ -4,12 +4,16 @@ import AceEditor from 'react-ace';
 import 'ace-builds/src-noconflict/mode-graphqlschema';
 import { API_OPTIONS } from '@/common/api-path';
 import { ToastContainer, toast } from 'react-toastify';
+import Documentation from '@/components/documentation/documentation';
+import { faFileText } from '@fortawesome/free-regular-svg-icons/faFileText';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 export const EditorQraphqlRequest = () => {
   const [query, setQuery] = useState('');
   const [getResponse, setResponse] = useState('');
   const [api, setApi] = useState('');
   const [isCustomApi, setIsCustomApi] = useState(true);
+  const [isDocsOpened, setIsDocsOpened] = useState(false);
 
   const handleCustomApiChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (isCustomApi) {
@@ -82,6 +86,10 @@ export const EditorQraphqlRequest = () => {
     }
   };
 
+  const handleDocsOpen = () => {
+    setIsDocsOpened(!isDocsOpened);
+  };
+
   return (
     <>
       <div className="w-full my-2" data-testid="api-select">
@@ -107,34 +115,42 @@ export const EditorQraphqlRequest = () => {
         )}
       </div>
 
-      <div className="grid grid-cols-2 w-full flex-1 gap-2">
-        <div className="flex-1" data-testid="editor">
-          <AceEditor
-            fontSize={14}
-            setOptions={{
-              showLineNumbers: true,
-              tabSize: 2,
-            }}
-            placeholder="Enter GraphQL query here"
-            width="100%"
-            height="60vh"
-            mode="graphqlschema"
-            className="flex-1 border border-gray-300 rounded p-2 text-black"
-            value={query}
-            onChange={handleEditorChange}
-          />
-
-          <button
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4"
-            onClick={executeQuery}
-            data-testid="execute-button"
-          >
-            Execute Query
+      <div className="flex w-full gap-2">
+        <div className="h-full p-2">
+          <button className="hover:opacity-60 cursor-pointer" onClick={handleDocsOpen}>
+            <FontAwesomeIcon icon={faFileText} />
           </button>
         </div>
+        {isDocsOpened && <Documentation api={api} />}
+        <div className="grid grid-cols-2 w-full flex-1 gap-2 col-end-auto">
+          <div className="flex-1" data-testid="editor">
+            <AceEditor
+              fontSize={14}
+              setOptions={{
+                showLineNumbers: true,
+                tabSize: 2,
+              }}
+              placeholder="Enter GraphQL query here"
+              width="100%"
+              height="60vh"
+              mode="graphqlschema"
+              className="flex-1 border border-gray-300 rounded p-2 text-black"
+              value={query}
+              onChange={handleEditorChange}
+            />
 
-        <div className="flex-1 p-2 bg-gray-200 rounded" data-testid="response">
-          <pre className="whitespace-pre-wrap">{getResponse}</pre>
+            <button
+              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4"
+              onClick={executeQuery}
+              data-testid="execute-button"
+            >
+              Execute Query
+            </button>
+          </div>
+
+          <div className="flex-1 p-2 bg-gray-200 rounded" data-testid="response">
+            <pre className="whitespace-pre-wrap">{getResponse}</pre>
+          </div>
         </div>
       </div>
       <ToastContainer position="bottom-right" />
