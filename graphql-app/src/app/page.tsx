@@ -9,6 +9,7 @@ export default function Home() {
       <Link href={AppRoutes.GRAPHQL} className="text-blue-500">
         Go to Editor
       </Link>
+      <div style={{ height: '1000px' }}></div>
     </main>
   );
 }
