@@ -11,6 +11,7 @@ export const Prettify = ({ query, setQuery }: PrettifyProps) => {
 
   const linesArr = query
     .split('')
+    .filter((item) => item !== ' ')
     .map((item, index, array) => {
       if (item === '{' || item === '}') {
         if (item === '{' && array[index + 1] !== '\n') {
@@ -28,38 +29,34 @@ export const Prettify = ({ query, setQuery }: PrettifyProps) => {
 
   const lineWithoutSpace = linesArr.filter((item) => item.trim() !== '');
 
-  const prettyLine = lineWithoutSpace
-    .map((line) => {
-      console.log(line);
+  const prettyLines = lineWithoutSpace.map((line) => {
+    return `${handleIndentation()}${line.trim()}`
+      .split('')
+      .map((item, index, array) => {
+        if (item === '{') {
+          indentation += 1;
 
-      return `${handleIndentation()}${line.trim()}`
-        .split('')
-        .map((item, index, array) => {
-          // console.log(array)
-          if (item === '{') {
-            indentation += 1;
-            if (array[0] === '{') {
-              return `${item.trim()}`;
-            }
-            if (item === '{' && array[index - 1] !== ' ') {
-              return ` ${item}`;
-            }
+          if (array[0] === '{') {
+            return `${item.trim()}`;
           }
-          if (item === '}') {
-            indentation -= 2;
-            indentation < 0 ? (indentation = 0) : indentation;
-          } else {
-          }
-          return item;
-        })
-        .join('');
-    })
-    .join('\n');
 
-  console.log(prettyLine);
+          if (item === '{' && array[index - 1] !== ' ') {
+            return ` ${item}`;
+          }
+        }
+
+        if (item === '}') {
+          indentation -= 2;
+          indentation < 0 ? (indentation = 0) : indentation;
+        }
+
+        return item;
+      })
+      .join('');
+  });
 
   const handleEditorChange = () => {
-    const prettifyQuery = prettyLine;
+    const prettifyQuery = prettyLines.join('\n');
     setQuery(prettifyQuery);
   };
 
