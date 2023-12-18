@@ -52,7 +52,7 @@ const sections: SectionInfo[] = [
     }
 ];
 
-const DeveloperCard = ({ developer }: { developer: Developer }) => (
+export const DeveloperCard = ({ developer }: { developer: Developer }) => (
     <div className='m-2'>
         <a href={developer.githubLink} target="_blank" rel="noopener noreferrer">
             <div className='w-24 h-24 rounded-full mx-auto overflow-hidden transition-transform duration-200 hover:scale-105'>
@@ -61,7 +61,6 @@ const DeveloperCard = ({ developer }: { developer: Developer }) => (
                     alt={developer.name}
                     width={96}
                     height={96}
-                    layout='responsive'
                     className='rounded-full'
                 />
             </div>
@@ -72,7 +71,7 @@ const DeveloperCard = ({ developer }: { developer: Developer }) => (
 );
 
 
-const Section = ({ info }: { info: SectionInfo }) => (
+export const Section = ({ info }: { info: SectionInfo }) => (
     <div className="flex-1 flex items-center justify-center flex-col m-10 pt-20">
         <h2 className="text-2xl font-bold pb-5">{info.title}</h2>
         <p>{info.content}</p>
