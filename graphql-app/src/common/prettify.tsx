@@ -11,7 +11,6 @@ export const Prettify = ({ query, setQuery }: PrettifyProps) => {
 
   const linesArr = query
     .split('')
-    .filter((item) => item !== ' ')
     .map((item, index, array) => {
       if (item === '{' || item === '}') {
         if (item === '{' && array[index + 1] !== '\n') {
@@ -20,6 +19,9 @@ export const Prettify = ({ query, setQuery }: PrettifyProps) => {
         if (item === '}' && array[index - 1] !== '\n') {
           return `\n${item}`;
         }
+      }
+      if (item === ' ' && array[index + 1] !== '{') {
+        return `\n${item}`;
       }
 
       return item;
@@ -46,7 +48,7 @@ export const Prettify = ({ query, setQuery }: PrettifyProps) => {
         }
 
         if (item === '}') {
-          indentation -= 2;
+          indentation -= 1;
           indentation < 0 ? (indentation = 0) : indentation;
         }
 
@@ -55,8 +57,16 @@ export const Prettify = ({ query, setQuery }: PrettifyProps) => {
       .join('');
   });
 
+  const closedBracketsPretty = prettyLines
+    .filter((item) => item.trim() === '}')
+    .map((item, i) => (i === 0 ? `\n${item.slice(2)}` : item.slice(2)))
+    .join('\n');
+  const prettyLinesWithoutClosedBrackets = prettyLines
+    .filter((item) => item.trim() !== '}')
+    .join('\n');
+
   const handleEditorChange = () => {
-    const prettifyQuery = prettyLines.join('\n');
+    const prettifyQuery = prettyLinesWithoutClosedBrackets.concat(closedBracketsPretty);
     setQuery(prettifyQuery);
   };
 
