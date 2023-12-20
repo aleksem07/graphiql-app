@@ -20,16 +20,34 @@ export const Prettify = ({ query, setQuery }: PrettifyProps) => {
           return `\n${item}`;
         }
       }
-      if (item === ' ' && array[index + 1] !== '{') {
+      if (item === ' ' && !array[index + 1].includes('{') && !array[index - 1].includes(':')) {
         return `\n${item}`;
       }
 
       return item;
     })
     .join('')
-    .split('\n');
+    .split('\n')
+    .filter((item) => item.trim() !== '');
 
-  const lineWithoutSpace = linesArr.filter((item) => item.trim() !== '');
+  const lineWithoutSpace = linesArr
+    .map((item, index, array) => {
+      if (item.trim().at(-1) === ':') {
+        const newValue = `${item.concat(array[index + 1].trim())}`;
+        array[index + 1] = ' ';
+        return newValue;
+      } else if (array[index + 1] && array[index + 1].trim().at(0) === ':') {
+        item = item.trim().replace(':', '');
+        const newValue = `${item}: ${array[index + 1].trim().replace(':', '')} `;
+        array[index + 1] = ' ';
+        return newValue;
+      } else {
+        return item;
+      }
+    })
+    .filter((item) => item.trim() !== '');
+
+  console.log(lineWithoutSpace);
 
   const prettyLines = lineWithoutSpace.map((line) => {
     return `${handleIndentation()}${line.trim()}`
