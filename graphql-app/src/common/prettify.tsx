@@ -75,7 +75,7 @@ export const Prettify = ({ query, setQuery }: PrettifyProps) => {
 
   const closedBracketsPretty = prettyLines
     .filter((item) => item.trim() === '}')
-    .map((item, i) => (i === 0 ? `\n${item.slice(2)}` : item.slice(2)))
+    .map((item, i) => (i === 0 ? `\n${item.slice(TAB_SIZE)}` : item.slice(TAB_SIZE)))
     .join('\n');
   const prettyLinesWithoutClosedBrackets = prettyLines
     .filter((item) => item.trim() !== '}')
