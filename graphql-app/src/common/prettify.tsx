@@ -47,8 +47,6 @@ export const Prettify = ({ query, setQuery }: PrettifyProps) => {
     })
     .filter((item) => item.trim() !== '');
 
-  console.log(lineWithoutSpace);
-
   const prettyLines = lineWithoutSpace.map((line) => {
     return `${handleIndentation()}${line.trim()}`
       .split('')
