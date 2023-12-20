@@ -121,7 +121,7 @@ export const EditorQraphqlRequest = () => {
             <FontAwesomeIcon icon={faFileText} />
           </button>
         </div>
-        {isDocsOpened && <Documentation api={api} />}
+        {isDocsOpened && <Documentation url={api} />}
         <div className="grid grid-cols-2 w-full flex-1 gap-2 col-end-auto">
           <div className="flex-1" data-testid="editor">
             <AceEditor
