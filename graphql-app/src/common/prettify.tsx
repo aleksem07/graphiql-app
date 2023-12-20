@@ -20,7 +20,7 @@ export const Prettify = ({ query, setQuery }: PrettifyProps) => {
           return `\n${item}`;
         }
       }
-      if (item === ' ' && !array[index + 1].includes('{') && !array[index - 1].includes(':')) {
+      if (item === ' ' && array[index + 1] !== '{' && !array[index - 1].includes(':')) {
         return `\n${item}`;
       }
 
