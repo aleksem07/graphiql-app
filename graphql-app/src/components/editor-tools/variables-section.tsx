@@ -3,17 +3,17 @@ import AceEditor from 'react-ace';
 import 'ace-builds/src-noconflict/mode-graphqlschema';
 
 export const VariablesSection = () => {
-  const DEFAULT_HEIGHT_VARIABLES_ACE_EDITOR = '0vh';
-  const OPEN_HEIGHT_VARIABLES_ACE_EDITOR = '10vh';
-  const [heightVariablesAceEditor, setHeightVariablesAceEditor] = useState(
-    DEFAULT_HEIGHT_VARIABLES_ACE_EDITOR
+  const DEFAULT_HEIGHT_VARIABLES_EDITOR = '0vh';
+  const OPEN_HEIGHT_VARIABLES_EDITOR = '10vh';
+  const [heightVariablesEditor, setHeightVariablesEditor] = useState(
+    DEFAULT_HEIGHT_VARIABLES_EDITOR
   );
 
   const handleVariablesChange = () => {
-    if (heightVariablesAceEditor === DEFAULT_HEIGHT_VARIABLES_ACE_EDITOR) {
-      setHeightVariablesAceEditor(OPEN_HEIGHT_VARIABLES_ACE_EDITOR);
+    if (heightVariablesEditor === DEFAULT_HEIGHT_VARIABLES_EDITOR) {
+      setHeightVariablesEditor(OPEN_HEIGHT_VARIABLES_EDITOR);
     } else {
-      setHeightVariablesAceEditor(DEFAULT_HEIGHT_VARIABLES_ACE_EDITOR);
+      setHeightVariablesEditor(DEFAULT_HEIGHT_VARIABLES_EDITOR);
     }
   };
 
@@ -24,10 +24,14 @@ export const VariablesSection = () => {
       </button>
 
       <AceEditor
+        setOptions={{
+          showLineNumbers: true,
+          tabSize: 2,
+        }}
         placeholder="Enter your variables"
         mode="graphqlschema"
         width="100%"
-        height={heightVariablesAceEditor}
+        height={heightVariablesEditor}
       />
     </div>
   );

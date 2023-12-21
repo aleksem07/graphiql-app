@@ -1,13 +1,14 @@
 'use client';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import AceEditor from 'react-ace';
 import 'ace-builds/src-noconflict/mode-graphqlschema';
 import { API_OPTIONS } from '@/common/api-path';
 import { ToastContainer, toast } from 'react-toastify';
-import { EditorTools } from '../../components/editor-tools/editor-tools';
+import { EditorTools } from '@/components/editor-tools/editor-tools';
 
 export const EditorQraphqlRequest = () => {
   const [query, setQuery] = useState('');
+  const [fetchQuery, setFetchQuery] = useState(query);
   const [getResponse, setResponse] = useState('');
   const [api, setApi] = useState('');
   const [isCustomApi, setIsCustomApi] = useState(true);
@@ -28,6 +29,10 @@ export const EditorQraphqlRequest = () => {
       setApi(selectedApi);
     }
   };
+
+  useEffect(() => {
+    setFetchQuery(query);
+  }, [query]);
 
   const handleEditorChange = (value: string | undefined) => {
     if (value) {
@@ -54,7 +59,7 @@ export const EditorQraphqlRequest = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ query }),
+        body: JSON.stringify({ query: fetchQuery }),
       });
 
       if (!response.ok) {
@@ -80,6 +85,11 @@ export const EditorQraphqlRequest = () => {
         toast.error('An unexpected error occurred');
         console.error(error);
       }
+    }
+  };
+  const handleKeyDown = (event: React.KeyboardEvent) => {
+    if (event.key === 'Enter' && event.ctrlKey) {
+      executeQuery();
     }
   };
 
@@ -109,7 +119,7 @@ export const EditorQraphqlRequest = () => {
       </div>
 
       <div className="grid grid-cols-2 w-full flex-1 gap-2 pb-2">
-        <div className="flex flex-col" data-testid="editor">
+        <div className="flex flex-col" data-testid="editor" onKeyDown={handleKeyDown}>
           <AceEditor
             fontSize={14}
             setOptions={{
