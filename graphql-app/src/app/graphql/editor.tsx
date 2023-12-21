@@ -4,6 +4,7 @@ import AceEditor from 'react-ace';
 import 'ace-builds/src-noconflict/mode-graphqlschema';
 import { API_OPTIONS } from '@/common/api-path';
 import { ToastContainer, toast } from 'react-toastify';
+import { EditorTools } from '../../components/editor-tools/editor-tools';
 
 export const EditorQraphqlRequest = () => {
   const [query, setQuery] = useState('');
@@ -107,8 +108,8 @@ export const EditorQraphqlRequest = () => {
         )}
       </div>
 
-      <div className="grid grid-cols-2 w-full flex-1 gap-2">
-        <div className="flex-1" data-testid="editor">
+      <div className="grid grid-cols-2 w-full flex-1 gap-2 pb-2">
+        <div className="flex flex-col" data-testid="editor">
           <AceEditor
             fontSize={14}
             setOptions={{
@@ -119,13 +120,15 @@ export const EditorQraphqlRequest = () => {
             width="100%"
             height="60vh"
             mode="graphqlschema"
-            className="flex-1 border border-gray-300 rounded p-2 text-black"
+            className="flex-1 border border-gray-300 rounded text-black"
             value={query}
             onChange={handleEditorChange}
           />
 
+          <EditorTools />
+
           <button
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4"
+            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
             onClick={executeQuery}
             data-testid="execute-button"
           >
