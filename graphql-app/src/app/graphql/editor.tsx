@@ -115,9 +115,12 @@ export const EditorQraphqlRequest = () => {
         )}
       </div>
 
-      <div className="flex w-full gap-2">
-        <div className="h-full p-2">
-          <button className="hover:opacity-60 cursor-pointer" onClick={handleDocsOpen}>
+      <div className="flex w-full flex-wrap sm:flex-nowrap relative">
+        <div className="flex sm:justify-center items-start sm:h-full sm:px-2 pb-2 w-screen sm:w-fit h-fit">
+          <button
+            className="p-2 rounded border border-gray-300 hover:opacity-60 hover:bg-gray-200 cursor-pointer"
+            onClick={handleDocsOpen}
+          >
             <FontAwesomeIcon icon={faFileText} />
           </button>
         </div>
