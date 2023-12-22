@@ -5,13 +5,18 @@ import 'ace-builds/src-noconflict/mode-graphqlschema';
 import { API_OPTIONS } from '@/common/api-path';
 import { ToastContainer, toast } from 'react-toastify';
 import { EditorTools } from '@/components/editor-tools/editor-tools';
+import { useAppDispatch } from '@/redux/hooks';
+import { setQuery } from '@/redux/editor/editorSlice';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/redux/store';
 
 export const EditorQraphqlRequest = () => {
-  const [query, setQuery] = useState('');
-  const [fetchQuery, setFetchQuery] = useState(query);
+  const [fetchQuery, setFetchQuery] = useState('');
   const [getResponse, setResponse] = useState('');
   const [api, setApi] = useState('');
   const [isCustomApi, setIsCustomApi] = useState(true);
+  const dispatch = useAppDispatch();
+  const query = useSelector((state: RootState) => state.editorSlice.query);
 
   const handleCustomApiChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (isCustomApi) {
@@ -36,9 +41,9 @@ export const EditorQraphqlRequest = () => {
 
   const handleEditorChange = (value: string | undefined) => {
     if (value) {
-      setQuery(value);
+      dispatch(setQuery({ query: value }));
     } else {
-      setQuery('');
+      dispatch(setQuery({ query: '' }));
     }
   };
 
@@ -138,7 +143,7 @@ export const EditorQraphqlRequest = () => {
           <EditorTools />
 
           <button
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+            className="bg-slate-700 hover:bg-slate-800 text-white font-bold py-2 px-4 rounded"
             onClick={executeQuery}
             data-testid="execute-button"
           >

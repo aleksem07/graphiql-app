@@ -1,12 +1,17 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { EditorQraphqlRequest } from '@/app/graphql/editor';
 import ace from 'ace-builds';
+import { Providers } from '@/redux/provider';
 
 ace.config.set('basePath', '@/app/graphql/editor');
 
 describe('EditorQraphqlRequest', () => {
   it('should render correctly', () => {
-    render(<EditorQraphqlRequest />);
+    render(
+      <Providers>
+        <EditorQraphqlRequest />
+      </Providers>
+    );
     const editor = screen.getByTestId('api-select');
     const customApi = screen.getByTestId('editor');
     const responce = screen.getByTestId('response');
@@ -19,7 +24,12 @@ describe('EditorQraphqlRequest', () => {
   });
 
   it('allows entering a custom API URL', () => {
-    render(<EditorQraphqlRequest />);
+    render(
+      <Providers>
+        <EditorQraphqlRequest />
+      </Providers>
+    );
+
     const customApiInput = screen.getByPlaceholderText('Enter Custom API URL');
 
     fireEvent.change(customApiInput, { target: { value: 'http://custom-api-url.com' } });
@@ -28,14 +38,22 @@ describe('EditorQraphqlRequest', () => {
   });
 
   it('find "enter query here" in editor', () => {
-    render(<EditorQraphqlRequest />);
+    render(
+      <Providers>
+        <EditorQraphqlRequest />
+      </Providers>
+    );
     const editorInput = screen.getByText(/Enter GraphQL query here/i);
     expect(editorInput).toBeInTheDocument();
   });
 
   it('change query in editor', () => {
-    const { getByTestId } = render(<EditorQraphqlRequest />);
-    const editor = getByTestId('editor');
+    render(
+      <Providers>
+        <EditorQraphqlRequest />
+      </Providers>
+    );
+    const editor = screen.getByTestId('editor');
 
     if (editor) {
       const textarea = editor.querySelector('textarea');
@@ -51,7 +69,11 @@ describe('EditorQraphqlRequest', () => {
   });
 
   it('click on execute button', async () => {
-    render(<EditorQraphqlRequest />);
+    render(
+      <Providers>
+        <EditorQraphqlRequest />
+      </Providers>
+    );
     const executeButton = screen.getByTestId('execute-button');
 
     global.fetch = jest.fn().mockResolvedValue({
@@ -67,7 +89,11 @@ describe('EditorQraphqlRequest', () => {
   });
 
   it('allows entering a custom API URL when the custom API option is enabled', () => {
-    render(<EditorQraphqlRequest />);
+    render(
+      <Providers>
+        <EditorQraphqlRequest />
+      </Providers>
+    );
     const customApiInput = screen.getByPlaceholderText('Enter Custom API URL');
 
     fireEvent.change(customApiInput, { target: { value: 'http://custom-api-url.com' } });
@@ -76,7 +102,11 @@ describe('EditorQraphqlRequest', () => {
   });
 
   it('allows selecting an API from the dropdown', async () => {
-    render(<EditorQraphqlRequest />);
+    render(
+      <Providers>
+        <EditorQraphqlRequest />
+      </Providers>
+    );
     const apiSelect = screen.getByTestId('api-select').querySelector('select') as HTMLSelectElement;
 
     if (apiSelect) {
