@@ -1,10 +1,26 @@
-import { API_OPTIONS } from '@/common/api-path';
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import {
+  BaseQueryFn,
+  FetchArgs,
+  FetchBaseQueryError,
+  createApi,
+  fetchBaseQuery,
+} from '@reduxjs/toolkit/query/react';
 import { IntrospectionQuery, getIntrospectionQuery } from 'graphql';
+import { RootState } from '../store';
+
+const dynamicBaseQuery: BaseQueryFn<string | FetchArgs, unknown, FetchBaseQueryError> = async (
+  args,
+  api,
+  extraOptions
+) => {
+  const baseUrl = (api.getState() as RootState).userSlice.userUrl;
+  const rawBaseQuery = fetchBaseQuery({ baseUrl });
+  return rawBaseQuery(args, api, extraOptions);
+};
 
 export const api = createApi({
   reducerPath: 'api',
-  baseQuery: fetchBaseQuery({ baseUrl: API_OPTIONS[1].value }), //ToDO: add ability to change api
+  baseQuery: dynamicBaseQuery,
   endpoints: ({ query }) => ({
     getSchema: query<IntrospectionQuery, void>({
       query: () => ({

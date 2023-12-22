@@ -1,29 +1,22 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 
 type userSliceType = {
-  isSignedIn: boolean;
-  email: string | null;
+  userUrl: string;
 };
 
 const initialState: userSliceType = {
-  isSignedIn: false,
-  email: null,
+  userUrl: '',
 };
 
 const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
-    setUser: (state: userSliceType, action: PayloadAction<userSliceType>) => {
-      state.isSignedIn = action.payload.isSignedIn;
-      state.email = action.payload.email;
-    },
-    removeUser: (state: userSliceType) => {
-      state.isSignedIn = false;
-      state.email = null;
+    setUserUrl: (state: userSliceType, action: PayloadAction<userSliceType>) => {
+      state.userUrl = action.payload.userUrl;
     },
   },
 });
 
-export const { setUser, removeUser } = userSlice.actions;
+export const { setUserUrl } = userSlice.actions;
 export default userSlice.reducer;
