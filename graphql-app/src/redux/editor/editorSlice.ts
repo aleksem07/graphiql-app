@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 type editorSliceType = {
-  query: string;
+  query?: string;
   variables?: string;
 };
 
@@ -11,7 +11,7 @@ const initialState: editorSliceType = {
 };
 
 const editorSlice = createSlice({
-  name: 'query',
+  name: 'editor',
   initialState,
   reducers: {
     setQuery: (state: editorSliceType, action: PayloadAction<editorSliceType>) => {

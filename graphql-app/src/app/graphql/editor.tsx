@@ -1,22 +1,35 @@
 'use client';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import AceEditor from 'react-ace';
 import 'ace-builds/src-noconflict/mode-graphqlschema';
 import { API_OPTIONS } from '@/common/api-path';
 import { ToastContainer, toast } from 'react-toastify';
 import { EditorTools } from '@/components/editor-tools/editor-tools';
-import { useAppDispatch } from '@/redux/hooks';
+import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { setQuery } from '@/redux/editor/editorSlice';
-import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 
 export const EditorQraphqlRequest = () => {
-  const [fetchQuery, setFetchQuery] = useState('');
   const [getResponse, setResponse] = useState('');
   const [api, setApi] = useState('');
   const [isCustomApi, setIsCustomApi] = useState(true);
   const dispatch = useAppDispatch();
-  const query = useSelector((state: RootState) => state.editorSlice.query);
+  const query = useAppSelector((state: RootState) => state.editorSlice.query);
+
+  const parseJson = (json: string) => {
+    let parsedJson = {};
+    try {
+      parsedJson = JSON.parse(json);
+    } catch (error) {
+      parsedJson = {};
+    }
+
+    return parsedJson;
+  };
+
+  const variables = parseJson(
+    useAppSelector((state: RootState) => state.editorSlice.variables) || '{}'
+  );
 
   const handleCustomApiChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (isCustomApi) {
@@ -34,10 +47,6 @@ export const EditorQraphqlRequest = () => {
       setApi(selectedApi);
     }
   };
-
-  useEffect(() => {
-    setFetchQuery(query);
-  }, [query]);
 
   const handleEditorChange = (value: string | undefined) => {
     if (value) {
@@ -64,7 +73,7 @@ export const EditorQraphqlRequest = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ query: fetchQuery }),
+        body: JSON.stringify({ query, variables }),
       });
 
       if (!response.ok) {

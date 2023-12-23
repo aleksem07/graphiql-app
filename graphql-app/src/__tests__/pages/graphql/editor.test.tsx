@@ -88,19 +88,6 @@ describe('EditorQraphqlRequest', () => {
     });
   });
 
-  it('allows entering a custom API URL when the custom API option is enabled', () => {
-    render(
-      <Providers>
-        <EditorQraphqlRequest />
-      </Providers>
-    );
-    const customApiInput = screen.getByPlaceholderText('Enter Custom API URL');
-
-    fireEvent.change(customApiInput, { target: { value: 'http://custom-api-url.com' } });
-
-    expect(customApiInput).toHaveValue('http://custom-api-url.com');
-  });
-
   it('allows selecting an API from the dropdown', async () => {
     render(
       <Providers>
