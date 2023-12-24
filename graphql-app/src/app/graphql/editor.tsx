@@ -140,7 +140,7 @@ export const EditorQraphqlRequest = () => {
               showLineNumbers: true,
               tabSize: 2,
             }}
-            placeholder={"Enter GraphQL query here \nPress Ctrl + Enter to execute"}
+            placeholder={'Enter GraphQL query here \nPress Ctrl + Enter to execute'}
             width="100%"
             height="60vh"
             mode="graphqlschema"

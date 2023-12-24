@@ -30,11 +30,16 @@ export const VariablesSection = () => {
 
   return (
     <div>
-      <button className="hover:bg-gray-300 p-2" onClick={handleButtonChange}>
+      <button
+        data-testid="variables-button"
+        className="hover:bg-gray-300 p-2"
+        onClick={handleButtonChange}
+      >
         Variables
       </button>
 
       <AceEditor
+        name="variables-editor"
         setOptions={{
           showLineNumbers: true,
           tabSize: 2,
