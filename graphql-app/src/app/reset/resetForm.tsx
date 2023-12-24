@@ -33,8 +33,6 @@ export default function ResetPassword() {
     await sendPasswordReset(data.email)
       .then((res) => {
         if (res instanceof Error) throw new Error(res.message);
-        console.log(res);
-        console.log(user);
         setResetLinkSent(translation.auth.resetLinkSent[language]);
       })
       .catch((err) => {

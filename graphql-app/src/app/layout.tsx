@@ -4,6 +4,7 @@ import './globals.css';
 import Header from '@/components/header/header';
 import Footer from '@/components/footer/footer';
 import { Providers } from '@/redux/provider';
+import 'react-toastify/dist/ReactToastify.css';
 
 const inter = Inter({ subsets: ['latin'] });
 
