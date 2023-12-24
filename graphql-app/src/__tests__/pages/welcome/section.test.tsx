@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { Section } from '../../../app/welcome/page';
+import { WelcomeSection } from '../../../components/WelcomeSection/WelcomeSection';
 
 const mockSectionInfo = {
     title: 'Test Section',
@@ -10,7 +10,7 @@ const mockSectionInfo = {
 
 describe('Section', () => {
     it('renders Section correctly', () => {
-        render(<Section info={mockSectionInfo} />);
+        render(<WelcomeSection info={mockSectionInfo} />);
 
         expect(screen.getByText(mockSectionInfo.title)).toBeInTheDocument();
         expect(screen.getByText(mockSectionInfo.content)).toBeInTheDocument();

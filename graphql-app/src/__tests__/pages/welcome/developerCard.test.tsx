@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { DeveloperCard } from '../../../app/welcome/page';
+import { DeveloperCard } from '../../../components/DeveloperCard/DeveloperCard';
 
 const mockDeveloper = {
     name: 'Test Developer',
