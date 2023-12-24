@@ -21,9 +21,9 @@ export default function Header() {
     position: 'sticky',
     top: 0,
     zIndex: 100,
-    backgroundColor: isScrolled ? '#fff' : '#1a202c',
-    color: isScrolled ? '#1a202c' : '#fff',
-    padding: '2rem',
+    backgroundColor: isScrolled ? '#607D8B' : '#1a202c',
+    color: '#fff',
+    padding: '1rem',
     transition: 'background-color 0.3s ease, color 0.3s ease',
   };
 

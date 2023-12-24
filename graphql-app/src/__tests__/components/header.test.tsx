@@ -22,7 +22,7 @@ describe('Header', () => {
 
     const headerElement = screen.getByTestId('header');
 
-    expect(headerElement).toHaveStyle('background-color: #fff');
-    expect(headerElement).toHaveStyle('color: #1a202c');
+    expect(headerElement).toHaveStyle('background-color: #607D8B');
+    expect(headerElement).toHaveStyle('color: #fff');
   });
 });
