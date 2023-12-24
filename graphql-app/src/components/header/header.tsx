@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { AppRoutes } from '@/common/routes';
 import NavLinks from '../navLinks/navLinks';
+import LangSwitch from '../LangSwitch/LanguageSwitcher';
 
 export default function Header() {
   return (
@@ -12,6 +13,7 @@ export default function Header() {
         <nav className="space-x-4">
           <NavLinks />
         </nav>
+        <LangSwitch />
       </div>
     </header>
   );
