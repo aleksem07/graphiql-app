@@ -94,7 +94,7 @@ export const EditorTools = () => {
           showLineNumbers: true,
           tabSize: 2,
         }}
-        placeholder="Enter your variables"
+        placeholder={`Enter your ${isVariables ? 'variables' : 'headers'} here`}
         mode="graphqlschema"
         width="100%"
         height={heightVariablesEditor}
