@@ -61,7 +61,7 @@ export const EditorTools = () => {
         dispatch(setVariables({ variables: value }));
       } else if (isHeaders) {
         dispatch(setHeaders({ headers: value }));
-      } 
+      }
     } else {
       if (isVariables) {
         dispatch(setVariables({ variables: '' }));
