@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import { Developer } from '../../common/welcomePageData';
+import { Developer } from '@/common/welcomePageData';
 
 export const DeveloperCard = ({ developer }: { developer: Developer }) => (
   <div className="m-2">
