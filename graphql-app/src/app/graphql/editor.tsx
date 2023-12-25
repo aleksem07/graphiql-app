@@ -8,6 +8,7 @@ import { EditorTools } from '@/components/editor-tools/editor-tools';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { setQuery } from '@/redux/editor/editorSlice';
 import { RootState } from '@/redux/store';
+import { parseJson } from '@/common/parse-json';
 
 export const EditorQraphqlRequest = () => {
   const [getResponse, setResponse] = useState('');
@@ -15,20 +16,11 @@ export const EditorQraphqlRequest = () => {
   const [isCustomApi, setIsCustomApi] = useState(true);
   const dispatch = useAppDispatch();
   const query = useAppSelector((state: RootState) => state.editorSlice.query);
-
-  const parseJson = (json: string) => {
-    let parsedJson = {};
-    try {
-      parsedJson = JSON.parse(json);
-    } catch (error) {
-      parsedJson = {};
-    }
-
-    return parsedJson;
-  };
-
   const variables = parseJson(
     useAppSelector((state: RootState) => state.editorSlice.variables) || '{}'
+  );
+  const headers = parseJson(
+    useAppSelector((state: RootState) => state.editorSlice.headers) || '{}'
   );
 
   const handleCustomApiChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -72,6 +64,7 @@ export const EditorQraphqlRequest = () => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          ...headers,
         },
         body: JSON.stringify({ query, variables }),
       });
@@ -87,13 +80,12 @@ export const EditorQraphqlRequest = () => {
         return;
       }
 
-      if (response.status === 200) {
-        const data = await response.json();
-        setResponse(JSON.stringify(data, null, 2));
-        toast.success('Query executed successfully');
-      }
+      const data = await response.json();
+      setResponse(JSON.stringify(data, null, 2));
+      toast.success('Query executed successfully');
     } catch (error) {
       if (error instanceof Error) {
+        setResponse(error.message);
         toast.error(error.message);
       } else {
         toast.error('An unexpected error occurred');
