@@ -14,8 +14,16 @@ export const EditorTools = () => {
   const OPEN_EDITOR_TOOLS = '15vh';
   const [heightVariablesEditor, setHeightEditorTools] = useState(CLOSE_EDITOR_TOOLS);
   const BUTTONS = [
-    { name: 'Variables', id: 'variables', className: 'border-r-2' },
-    { name: 'Headers', id: 'headers', className: 'border-r-2' },
+    {
+      name: 'Variables',
+      id: 'variables',
+      className: `border-r-2 ${isVariables && isOpen ? 'bg-gray-300' : ''}`,
+    },
+    {
+      name: 'Headers',
+      id: 'headers',
+      className: `border-r-2 ${isHeaders && isOpen ? 'bg-gray-300' : ''}`,
+    },
     { name: isOpen ? 'Hide' : 'Show', id: 'show-hide', className: 'float-right' },
   ];
   const variables = useAppSelector((state: RootState) => state.editorSlice.variables);
