@@ -1,5 +1,6 @@
 'use client';
 
+import { useEffect } from 'react';
 import { EditorQraphqlRequest } from './editor';
 import { AppRoutes } from '@/common/routes';
 import { auth } from '@/firebase';
@@ -12,6 +13,11 @@ export default function AuthWrapper() {
   if (!user && !loading) {
     redirect(AppRoutes.HOME);
   }
+  useEffect(() => {
+    if (!user && !loading) {
+      redirect(AppRoutes.HOME);
+    }
+  }, [user, loading]);
 
   return (
     <>

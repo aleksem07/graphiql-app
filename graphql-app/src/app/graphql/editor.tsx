@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import AceEditor from 'react-ace';
 import 'ace-builds/src-noconflict/mode-graphqlschema';
 import { API_OPTIONS } from '@/common/api-path';
@@ -8,10 +8,6 @@ import { EditorTools } from '@/components/editor-tools/editor-tools';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { setQuery } from '@/redux/editor/editorSlice';
 import { RootState } from '@/redux/store';
-import { AppRoutes } from '@/common/routes';
-import { useAuthState } from 'react-firebase-hooks/auth';
-import { auth } from '../../firebase';
-import { useRouter } from 'next/navigation';
 
 export const EditorQraphqlRequest = () => {
   const [getResponse, setResponse] = useState('');
@@ -19,15 +15,6 @@ export const EditorQraphqlRequest = () => {
   const [isCustomApi, setIsCustomApi] = useState(true);
   const dispatch = useAppDispatch();
   const query = useAppSelector((state: RootState) => state.editorSlice.query);
-  const router = useRouter();
-  const [user] = useAuthState(auth);
-
-  if (!user) router.push(AppRoutes.HOME);
-  useEffect(() => {
-    if (!user) {
-      router.replace(AppRoutes.HOME);
-    }
-  }, [user]);
 
   const parseJson = (json: string) => {
     let parsedJson = {};
