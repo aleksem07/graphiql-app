@@ -123,7 +123,7 @@ export default function SignupForm() {
 
       <input
         type="submit"
-        value={translation.buttons.signIn[language]}
+        value={translation.buttons.signUp[language]}
         disabled={!isValid}
         className="px-4 py-2 mt-2 mb-2 w-full text-lg text-white bg-black rounded-md cursor-pointer disabled:cursor-not-allowed disabled:opacity-40"
       />
