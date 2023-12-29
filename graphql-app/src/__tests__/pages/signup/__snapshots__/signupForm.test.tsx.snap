@@ -3,7 +3,7 @@
 exports[`SignUpForm renders SignUpForm correctly 1`] = `
 <div>
   <form
-    class="w-full max-w-md bg-gray-300 p-6 rounded-md"
+    class="w-full max-w-md bg-gray-300 p-4 rounded-md"
     novalidate=""
   >
     <input
