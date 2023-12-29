@@ -7,7 +7,7 @@ export const metadata: Metadata = {
 
 export default function GraphqlPage() {
   return (
-    <main className="flex-1 flex flex-col items-center justify-center">
+    <main className="mx-1 flex-1 flex flex-col items-center justify-center">
       <EditorQraphqlRequest />
     </main>
   );

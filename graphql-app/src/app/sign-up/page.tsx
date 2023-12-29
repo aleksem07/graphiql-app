@@ -11,7 +11,7 @@ export default function SignUpPage() {
   const language = 'en';
 
   return (
-    <main className="flex-1 flex flex-col items-center justify-center">
+    <main className="mx-2 flex-1 flex flex-col items-center justify-center">
       <h1 className="mb-4">{translation.buttons.signUp[language]}</h1>
       <SignupForm />
     </main>
