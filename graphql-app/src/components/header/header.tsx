@@ -29,11 +29,11 @@ export default function Header() {
 
   return (
     <header style={stickyHeaderStyle} data-testid="header">
-      <div className="container mx-auto flex justify-between items-center">
-        <Link href={AppRoutes.HOME} className="text-2xl font-bold">
+      <div className="relative container mx-auto flex justify-between items-center">
+        <Link href={AppRoutes.HOME} className=" text-lg font-bold sm:text-2xl">
           GraphiQL
         </Link>
-        <nav className="space-x-4">
+        <nav className="space-x-2 sm:space-x-4 ml-8 relative flex items-center justify-center">
           <NavLinks />
         </nav>
       </div>
