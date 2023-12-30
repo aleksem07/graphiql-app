@@ -4,15 +4,35 @@ import AceEditor from 'react-ace';
 import 'ace-builds/src-noconflict/mode-graphqlschema';
 import { API_OPTIONS } from '@/common/api-path';
 import { ToastContainer, toast } from 'react-toastify';
+import { EditorTools } from '@/components/editor-tools/editor-tools';
+import { useAppDispatch, useAppSelector } from '@/redux/hooks';
+import { setQuery } from '@/redux/editor/editorSlice';
+import { RootState } from '@/redux/store';
 import Documentation from '@/components/documentation/documentation';
 import { faFileText } from '@fortawesome/free-regular-svg-icons/faFileText';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 export const EditorQraphqlRequest = () => {
-  const [query, setQuery] = useState('');
   const [getResponse, setResponse] = useState('');
   const [api, setApi] = useState('');
   const [isCustomApi, setIsCustomApi] = useState(true);
+  const dispatch = useAppDispatch();
+  const query = useAppSelector((state: RootState) => state.editorSlice.query);
+
+  const parseJson = (json: string) => {
+    let parsedJson = {};
+    try {
+      parsedJson = JSON.parse(json);
+    } catch (error) {
+      parsedJson = {};
+    }
+
+    return parsedJson;
+  };
+
+  const variables = parseJson(
+    useAppSelector((state: RootState) => state.editorSlice.variables) || '{}'
+  );
   const [isDocsOpened, setIsDocsOpened] = useState(false);
 
   const handleCustomApiChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -34,9 +54,9 @@ export const EditorQraphqlRequest = () => {
 
   const handleEditorChange = (value: string | undefined) => {
     if (value) {
-      setQuery(value);
+      dispatch(setQuery({ query: value }));
     } else {
-      setQuery('');
+      dispatch(setQuery({ query: '' }));
     }
   };
 
@@ -57,7 +77,7 @@ export const EditorQraphqlRequest = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ query }),
+        body: JSON.stringify({ query, variables }),
       });
 
       if (!response.ok) {
@@ -83,6 +103,11 @@ export const EditorQraphqlRequest = () => {
         toast.error('An unexpected error occurred');
         console.error(error);
       }
+    }
+  };
+  const handleKeyDown = (event: React.KeyboardEvent) => {
+    if (event.key === 'Enter' && event.ctrlKey) {
+      executeQuery();
     }
   };
 
@@ -125,25 +150,27 @@ export const EditorQraphqlRequest = () => {
           </button>
         </div>
         {isDocsOpened && <Documentation url={api} />}
-        <div className="grid grid-cols-2 w-full flex-1 gap-2 col-end-auto">
-          <div className="flex-1" data-testid="editor">
+        <div className="grid grid-cols-2 w-full flex-1 gap-2 col-end-auto pb-2">
+          <div className="flex flex-col" data-testid="editor" onKeyDown={handleKeyDown}>
             <AceEditor
               fontSize={14}
               setOptions={{
                 showLineNumbers: true,
                 tabSize: 2,
               }}
-              placeholder="Enter GraphQL query here"
+              placeholder={'Enter GraphQL query here \nPress Ctrl + Enter to execute'}
               width="100%"
               height="60vh"
               mode="graphqlschema"
-              className="flex-1 border border-gray-300 rounded p-2 text-black"
+              className="flex-1 border border-gray-300 rounded text-black"
               value={query}
               onChange={handleEditorChange}
             />
 
+            <EditorTools />
+
             <button
-              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4"
+              className="bg-slate-700 hover:bg-slate-800 text-white font-bold py-2 px-4 rounded"
               onClick={executeQuery}
               data-testid="execute-button"
             >
