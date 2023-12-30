@@ -1,7 +1,6 @@
 import { useLazyGetSchemaQuery } from '@/redux/api/api';
 import { GraphQLSchema, buildClientSchema } from 'graphql';
 import { Suspense, useEffect, useState, lazy } from 'react';
-// import Schema from '../schema/schema';
 import Skeleton from '../skeleton/skeleton';
 import { useAppDispatch } from '@/redux/hooks';
 import { setUserUrl } from '@/redux/user/userSlice';
@@ -21,9 +20,11 @@ export default function Documentation({ url }: apiType) {
       dispatch(setUserUrl({ userUrl: url }));
       trigger();
       if (data) {
-        const PrintedSchema = lazy(() => import('../printedSchema/printedSchema'));
+        // const PrintedSchema = lazy(() => import('../printedSchema/printedSchema'));
+        const Schema = lazy(() => import('../schema/schema'));
         const graphQLSchema = buildClientSchema(data);
-        setSchemaJSX(<PrintedSchema graphQLSchema={graphQLSchema} />);
+        // setSchemaJSX(<PrintedSchema graphQLSchema={graphQLSchema} />);
+        setSchemaJSX(<Schema graphQLSchema={graphQLSchema} />);
         setSchema(graphQLSchema);
       }
     }
@@ -41,7 +42,6 @@ export default function Documentation({ url }: apiType) {
       <Suspense fallback={<Skeleton />}>
         {isLoading && <Skeleton />}
         {isError && <p className="p-2 text-md text-red-500">Error...</p>}
-        {/* {schema && <Schema graphQLSchema={schema} />} */}
         {schema && schemaJSX}
       </Suspense>
     </section>
