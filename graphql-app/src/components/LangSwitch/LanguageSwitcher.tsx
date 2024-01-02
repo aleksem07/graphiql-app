@@ -1,16 +1,15 @@
 "use client";
-import React, { useState } from 'react';
+import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { setLanguage } from '../../redux/lang/languageSlice';
+import { RootState } from '../../redux/store';
 
 const LangSwitch = () => {
-    const [language, setLanguage] = useState('en');
+    const dispatch = useDispatch();
+    const language = useSelector((state: RootState) => state.language.value);
 
     const toggleLanguage = () => {
-        setLanguage(language === 'en' ? 'ru' : 'en');
-        if (language === 'ru') {
-            localStorage.setItem('language', 'ru');
-        } else {
-            localStorage.setItem('language', 'en');
-        }
+        dispatch(setLanguage(language === 'en' ? 'ru' : 'en'));
     };
 
     return (
