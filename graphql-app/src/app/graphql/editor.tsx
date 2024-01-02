@@ -132,7 +132,7 @@ export const EditorQraphqlRequest = () => {
         )}
       </div>
 
-      <div className="flex w-full flex-wrap sm:flex-nowrap relative">
+      <div className="flex w-full flex-wrap sm:flex-nowrap relative content-start">
         <div className="flex sm:justify-center items-start sm:h-full sm:px-2 pb-2 w-screen sm:w-fit h-fit">
           <button
             className="p-2 rounded border border-gray-300 hover:opacity-60 hover:bg-gray-200 cursor-pointer"
@@ -142,7 +142,7 @@ export const EditorQraphqlRequest = () => {
           </button>
         </div>
         {isDocsOpened && <Documentation url={api} />}
-        <div className="grid grid-cols-2 w-full flex-1 gap-2 col-end-auto pb-2">
+        <div className="grid grid-cols-2 w-full gap-2 pb-2 col-end-auto">
           <div className="flex flex-col" data-testid="editor" onKeyDown={handleKeyDown}>
             <AceEditor
               fontSize={14}
@@ -154,7 +154,7 @@ export const EditorQraphqlRequest = () => {
               width="100%"
               height="60vh"
               mode="graphqlschema"
-              className="flex-1 border border-gray-300 rounded text-black"
+              className="flex-1 border border-gray-300 rounded text-black min-h-[50vh] sm:min-h-[60vh]"
               value={query}
               onChange={handleEditorChange}
             />
