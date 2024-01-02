@@ -1,4 +1,4 @@
-import { SectionInfo } from '../../common/wecomePageData';
+import { SectionInfo } from '@/common/welcomePageData';
 
 export const WelcomeSection = ({ info }: { info: SectionInfo }) => (
   <div className="flex-1 flex items-center justify-center flex-col m-10 pt-20">

@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { DeveloperCard } from '@/components/DeveloperCard/DeveloperCard';
 import { WelcomeSection } from '@/components/WelcomeSection/WelcomeSection';
-import { developers, sections } from '../../common/wecomePageData';
+import { developers, sections } from '@/common/welcomePageData';
 
 export const metadata: Metadata = {
   title: 'Welcome page - Graphql playground',

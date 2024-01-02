@@ -6,17 +6,14 @@ import translation from '@/common/translation';
 import { auth, logout } from '@/firebase';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { useEffect } from 'react';
-import { useRouter } from 'next/navigation';
 
 export default function NavLinks() {
-  const router = useRouter();
   const [user, loading] = useAuthState(auth);
   const userEmail = user?.email;
   const language = 'en';
 
   const handleLogout = () => {
     logout();
-    router.push(AppRoutes.HOME);
   };
 
   useEffect(() => {

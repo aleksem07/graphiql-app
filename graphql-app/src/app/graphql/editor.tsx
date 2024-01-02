@@ -8,6 +8,7 @@ import { EditorTools } from '@/components/editor-tools/editor-tools';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { setQuery } from '@/redux/editor/editorSlice';
 import { RootState } from '@/redux/store';
+import { parseJson } from '@/common/parse-json';
 import Documentation from '@/components/documentation/documentation';
 import { faFileText } from '@fortawesome/free-regular-svg-icons/faFileText';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -18,20 +19,11 @@ export const EditorQraphqlRequest = () => {
   const [isCustomApi, setIsCustomApi] = useState(true);
   const dispatch = useAppDispatch();
   const query = useAppSelector((state: RootState) => state.editorSlice.query);
-
-  const parseJson = (json: string) => {
-    let parsedJson = {};
-    try {
-      parsedJson = JSON.parse(json);
-    } catch (error) {
-      parsedJson = {};
-    }
-
-    return parsedJson;
-  };
-
   const variables = parseJson(
     useAppSelector((state: RootState) => state.editorSlice.variables) || '{}'
+  );
+  const headers = parseJson(
+    useAppSelector((state: RootState) => state.editorSlice.headers) || '{}'
   );
   const [isDocsOpened, setIsDocsOpened] = useState(false);
 
@@ -76,6 +68,7 @@ export const EditorQraphqlRequest = () => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          ...headers,
         },
         body: JSON.stringify({ query, variables }),
       });
@@ -91,13 +84,12 @@ export const EditorQraphqlRequest = () => {
         return;
       }
 
-      if (response.status === 200) {
-        const data = await response.json();
-        setResponse(JSON.stringify(data, null, 2));
-        toast.success('Query executed successfully');
-      }
+      const data = await response.json();
+      setResponse(JSON.stringify(data, null, 2));
+      toast.success('Query executed successfully');
     } catch (error) {
       if (error instanceof Error) {
+        setResponse(error.message);
         toast.error(error.message);
       } else {
         toast.error('An unexpected error occurred');
