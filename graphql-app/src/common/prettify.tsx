@@ -1,13 +1,18 @@
-type PrettifyProps = {
-  query: string;
-  setQuery: (query: string) => void;
-};
+import { useAppSelector, useAppDispatch } from '@/redux/hooks';
+import { setQuery } from '@/redux/editor/editorSlice';
+import { RootState } from '@/redux/store';
 
-export const Prettify = ({ query, setQuery }: PrettifyProps) => {
+export const Prettify = () => {
+  const dispatch = useAppDispatch();
+  const query = useAppSelector((state: RootState) => state.editorSlice.query);
   const TAB_SIZE = 2;
   let indentation = 0;
 
   const handleIndentation = () => ' '.repeat(TAB_SIZE * indentation);
+
+  if (!query) {
+    return;
+  }
 
   const linesArr = query
     .split('')
@@ -83,13 +88,13 @@ export const Prettify = ({ query, setQuery }: PrettifyProps) => {
 
   const handleEditorChange = () => {
     const prettifyQuery = prettyLinesWithoutClosedBrackets.concat(closedBracketsPretty);
-    setQuery(prettifyQuery);
+    dispatch(setQuery({ query: prettifyQuery }));
   };
 
   return (
     <>
       <button
-        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4"
+        className="bg-blue-500 hover:bg-blue-700 font-bold py-2 px-4 rounded mt-4"
         onClick={handleEditorChange}
       >
         Prettify

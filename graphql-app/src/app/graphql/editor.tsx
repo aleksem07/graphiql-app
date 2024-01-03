@@ -5,12 +5,24 @@ import 'ace-builds/src-noconflict/mode-graphqlschema';
 import { API_OPTIONS } from '@/common/api-path';
 import { ToastContainer, toast } from 'react-toastify';
 import { Prettify } from '@/common/prettify';
+import { EditorTools } from '@/components/editor-tools/editor-tools';
+import { useAppDispatch, useAppSelector } from '@/redux/hooks';
+import { setQuery } from '@/redux/editor/editorSlice';
+import { RootState } from '@/redux/store';
+import { parseJson } from '@/common/parse-json';
 
 export const EditorQraphqlRequest = () => {
-  const [query, setQuery] = useState('');
   const [getResponse, setResponse] = useState('');
   const [api, setApi] = useState('');
   const [isCustomApi, setIsCustomApi] = useState(true);
+  const dispatch = useAppDispatch();
+  const query = useAppSelector((state: RootState) => state.editorSlice.query);
+  const variables = parseJson(
+    useAppSelector((state: RootState) => state.editorSlice.variables) || '{}'
+  );
+  const headers = parseJson(
+    useAppSelector((state: RootState) => state.editorSlice.headers) || '{}'
+  );
 
   const handleCustomApiChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (isCustomApi) {
@@ -31,9 +43,9 @@ export const EditorQraphqlRequest = () => {
 
   const handleEditorChange = (value: string | undefined) => {
     if (value) {
-      setQuery(value);
+      dispatch(setQuery({ query: value }));
     } else {
-      setQuery('');
+      dispatch(setQuery({ query: '' }));
     }
   };
 
@@ -53,8 +65,9 @@ export const EditorQraphqlRequest = () => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          ...headers,
         },
-        body: JSON.stringify({ query }),
+        body: JSON.stringify({ query, variables }),
       });
 
       if (!response.ok) {
@@ -68,18 +81,22 @@ export const EditorQraphqlRequest = () => {
         return;
       }
 
-      if (response.status === 200) {
-        const data = await response.json();
-        setResponse(JSON.stringify(data, null, 2));
-        toast.success('Query executed successfully');
-      }
+      const data = await response.json();
+      setResponse(JSON.stringify(data, null, 2));
+      toast.success('Query executed successfully');
     } catch (error) {
       if (error instanceof Error) {
+        setResponse(error.message);
         toast.error(error.message);
       } else {
         toast.error('An unexpected error occurred');
         console.error(error);
       }
+    }
+  };
+  const handleKeyDown = (event: React.KeyboardEvent) => {
+    if (event.key === 'Enter' && event.ctrlKey) {
+      executeQuery();
     }
   };
 
@@ -108,33 +125,32 @@ export const EditorQraphqlRequest = () => {
         )}
       </div>
 
-      <div className="grid grid-cols-2 w-full flex-1 gap-2">
-        <div className="flex-1" data-testid="editor">
+      <div className="grid grid-cols-2 w-full flex-1 gap-2 pb-2">
+        <div className="flex flex-col" data-testid="editor" onKeyDown={handleKeyDown}>
           <AceEditor
             fontSize={14}
             setOptions={{
               showLineNumbers: true,
               tabSize: 2,
             }}
-            placeholder="Enter GraphQL query here"
+            placeholder={'Enter GraphQL query here \nPress Ctrl + Enter to execute'}
             width="100%"
             height="60vh"
             mode="graphqlschema"
-            className="flex-1 border border-gray-300 rounded p-2 text-black"
+            className="flex-1 border border-gray-300 rounded text-black"
             value={query}
             onChange={handleEditorChange}
           />
 
-          <div className="flex gap-2">
-            <button
-              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4"
-              onClick={executeQuery}
-              data-testid="execute-button"
-            >
-              Execute Query
-            </button>
-            <Prettify query={query} setQuery={setQuery} />
-          </div>
+          <EditorTools />
+          <Prettify />
+          <button
+            className="bg-slate-700 hover:bg-slate-800 text-white font-bold py-2 px-4 rounded"
+            onClick={executeQuery}
+            data-testid="execute-button"
+          >
+            Execute Query
+          </button>
         </div>
 
         <div className="flex-1 p-2 bg-gray-200 rounded" data-testid="response">
