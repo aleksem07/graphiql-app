@@ -11,7 +11,7 @@ import {
 import FirstPageSchema from './firstPageSchema';
 
 export default function Schema({ graphQLSchema }: { graphQLSchema: GraphQLSchema }) {
-  const [heading, setHeading] = useState<string>('Documentation');
+  const [heading, setHeading] = useState<string | null>(null);
   const [rootHeading, setRootHeading] = useState<string>('Root Types');
   const [docsDescription, setDocsDescription] = useState<string>(
     'A GraphQL schema provides a root type for each kind of operation.'
@@ -19,9 +19,10 @@ export default function Schema({ graphQLSchema }: { graphQLSchema: GraphQLSchema
   const [isFirstPage, setIsFirstPage] = useState<boolean>(true);
   const [typeData, setTypeData] = useState<[string, GraphQLField<unknown, unknown>][] | null>(null);
   const [values, setValues] = useState<readonly GraphQLEnumValue[] | null>(null);
-  console.log(graphQLSchema);
+  const [history, setHistory] = useState<string[]>([]);
 
-  const handleTypeClick = (type: string) => {
+  const handleTypeClick = (type: string, isBack: boolean = false) => {
+    if (!isBack && typeof heading === 'string') setHistory([...history, heading]);
     const cleanedType = type.replace(/[\[\]:! ]/g, '');
     setHeading(cleanedType);
     const typeInfo = graphQLSchema.getType(cleanedType);
@@ -48,7 +49,14 @@ export default function Schema({ graphQLSchema }: { graphQLSchema: GraphQLSchema
   };
 
   const handleBack = () => {
-    console.log('back');
+    const type: string | undefined = history[history.length - 1];
+    if (history.length) {
+      setHistory(history.slice(0, -1));
+      handleTypeClick(type, true);
+    } else {
+      setIsFirstPage(true);
+      setHeading(null);
+    }
   };
 
   return (
