@@ -1,6 +1,7 @@
 import { useAppSelector, useAppDispatch } from '@/redux/hooks';
 import { setQuery } from '@/redux/editor/editorSlice';
 import { RootState } from '@/redux/store';
+import { toast } from 'react-toastify';
 
 export const Prettify = () => {
   const dispatch = useAppDispatch();
@@ -10,7 +11,7 @@ export const Prettify = () => {
 
   const handleIndentation = () => ' '.repeat(TAB_SIZE * indentation);
 
-  if (!query) {
+  if (typeof query === 'undefined') {
     return;
   }
 
@@ -89,18 +90,17 @@ export const Prettify = () => {
   const handleEditorChange = () => {
     const prettifyQuery = prettyLinesWithoutClosedBrackets.concat(closedBracketsPretty);
     dispatch(setQuery({ query: prettifyQuery }));
+    toast.success('Prettified successfully!');
   };
 
   return (
-    <>
-      <button
-        type="button"
-        data-testid="prettify-button"
-        className="bg-blue-500 hover:bg-blue-700 font-bold py-2 px-4 rounded mt-4"
-        onClick={handleEditorChange}
-      >
-        Prettify
-      </button>
-    </>
+    <button
+      type="button"
+      data-testid="prettify-button"
+      className="bg-blue-500 hover:bg-gray-300 py-2 px-4 mt-4"
+      onClick={handleEditorChange}
+    >
+      Prettify
+    </button>
   );
 };
