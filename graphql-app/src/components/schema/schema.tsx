@@ -1,11 +1,14 @@
 import { useState } from 'react';
 import {
+  GraphQLEnumType,
+  GraphQLEnumValue,
   GraphQLField,
-  GraphQLFieldMap,
+  GraphQLInputObjectType,
   GraphQLList,
   GraphQLObjectType,
   GraphQLSchema,
 } from 'graphql/type';
+import FirstPageSchema from './firstPageSchema';
 
 export default function Schema({ graphQLSchema }: { graphQLSchema: GraphQLSchema }) {
   const [heading, setHeading] = useState<string>('Documentation');
@@ -15,24 +18,24 @@ export default function Schema({ graphQLSchema }: { graphQLSchema: GraphQLSchema
   );
   const [isFirstPage, setIsFirstPage] = useState<boolean>(true);
   const [typeData, setTypeData] = useState<[string, GraphQLField<unknown, unknown>][] | null>(null);
+  const [values, setValues] = useState<readonly GraphQLEnumValue[] | null>(null);
   console.log(graphQLSchema);
-  const root = graphQLSchema.getQueryType()?.name;
-  const typeMap = graphQLSchema.getTypeMap();
-  const types: string[] = Object.keys(typeMap).filter(
-    (key) => key !== root && !key.startsWith('__')
-  );
 
   const handleTypeClick = (type: string) => {
-    setHeading(type);
-    const typeInfo = graphQLSchema.getType(type);
+    const cleanedType = type.replace(/[\[\]:! ]/g, '');
+    setHeading(cleanedType);
+    const typeInfo = graphQLSchema.getType(cleanedType);
     setDocsDescription(typeInfo?.description ?? '');
     setRootHeading('');
     setIsFirstPage(false);
     setTypeData(null);
-    console.log('type: ', type);
-    const typeFields: GraphQLFieldMap<unknown, unknown> | null =
-      typeInfo instanceof GraphQLObjectType ? typeInfo.getFields() : null;
+    console.log('type: ', type, 'cleanedType', cleanedType);
+    const typeFields =
+      typeInfo instanceof GraphQLObjectType || typeInfo instanceof GraphQLInputObjectType
+        ? typeInfo.getFields()
+        : null;
     console.log(typeFields);
+    setValues(typeInfo instanceof GraphQLEnumType ? typeInfo.getValues() : null);
     if (typeFields) {
       const typeFieldsArray = Object.entries(typeFields).filter(([, value]) => {
         if (value) return true;
@@ -50,37 +53,24 @@ export default function Schema({ graphQLSchema }: { graphQLSchema: GraphQLSchema
 
   return (
     <>
-      <h3 className="text-md font-semibold mb-2 relative">
-        {heading}
-        <button
-          className="text-sm p-1 border absolute right-0 hover:border-current"
-          onClick={handleBack}
-        >
-          {`<-`}
-        </button>
-      </h3>
-      <p className="text-sm mb-2">{docsDescription}</p>
-      <h5 className="text-sm font-semibold">{rootHeading}</h5>
-      {isFirstPage && root && (
+      {isFirstPage && (
+        <FirstPageSchema graphQLSchema={graphQLSchema} handleTypeClick={handleTypeClick} />
+      )}
+      {!isFirstPage && (
         <>
-          <p>
-            query:{' '}
-            <span className="text-orange-700 text-sm cursor-pointer hover:underline">{root}</span>
-          </p>
-          <h5 className="text-sm font-semibold">All Schema Types</h5>
+          <h3 className="text-md font-semibold mb-2 relative">
+            {heading}
+            <button
+              className="text-sm p-1 border absolute right-0 hover:border-current"
+              onClick={handleBack}
+            >
+              {`<-`}
+            </button>
+          </h3>
+          <p className="text-sm mb-2">{docsDescription}</p>
+          <h5 className="text-sm font-semibold">{rootHeading}</h5>
         </>
       )}
-      {isFirstPage &&
-        types &&
-        types.map((type) => (
-          <p
-            key={type}
-            onClick={() => handleTypeClick(type)}
-            className="text-orange-700 text-sm cursor-pointer hover:underline"
-          >
-            {type}
-          </p>
-        ))}
       {!isFirstPage &&
         typeData &&
         typeData.map(([key, value]) => {
@@ -90,8 +80,32 @@ export default function Schema({ graphQLSchema }: { graphQLSchema: GraphQLSchema
                 className="text-blue-700 text-sm cursor-pointer hover:underline"
                 onClick={() => console.log(key)}
               >
-                {`${value.name}: `}
+                {`${value.name}`}
               </span>
+              {value.args && value.args.length && (
+                <>
+                  <span>{'('}</span>
+                  {value.args.map((arg, ind) => (
+                    <p className="inline" key={ind}>
+                      <span className="text-gray-500 text-sm">{`${arg.name}: `}</span>
+                      <span
+                        className="text-orange-700 text-sm cursor-pointer hover:underline"
+                        onClick={(e) =>
+                          e.target instanceof HTMLSpanElement && e.target.textContent
+                            ? handleTypeClick(e.target.textContent)
+                            : null
+                        }
+                      >
+                        {arg.type instanceof GraphQLList
+                          ? arg.type.ofType.toString()
+                          : arg.type.toString()}
+                      </span>
+                      {ind === value.args.length - 1 ? null : <span>{', '}</span>}
+                    </p>
+                  ))}
+                  <span>{')'}</span>
+                </>
+              )}
               <span
                 className="text-orange-700 text-sm cursor-pointer hover:underline"
                 onClick={(e) =>
@@ -100,12 +114,23 @@ export default function Schema({ graphQLSchema }: { graphQLSchema: GraphQLSchema
                     : null
                 }
               >
-                {value.type instanceof GraphQLList ? value.type.ofType.name : value.type.toString()}
+                {`: ${
+                  value.type instanceof GraphQLList
+                    ? value.type.ofType.toString()
+                    : value.type.toString()
+                }`}
               </span>
               <p className="text-xs text-gray-500 mt-1 mb-3">{value.description}</p>
             </div>
           );
         })}
+      {!isFirstPage &&
+        values &&
+        values.map((value) => (
+          <p className="text-sm text-blue-700" key={value.name}>
+            {value.name}
+          </p>
+        ))}
     </>
   );
 }
