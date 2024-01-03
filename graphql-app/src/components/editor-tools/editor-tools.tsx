@@ -4,6 +4,7 @@ import 'ace-builds/src-noconflict/mode-graphqlschema';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { RootState } from '@/redux/store';
 import { setHeaders, setVariables } from '@/redux/editor/editorSlice';
+import { Prettify } from '@/common/prettify';
 
 export const EditorTools = () => {
   const dispatch = useAppDispatch();
@@ -95,6 +96,7 @@ export const EditorTools = () => {
           {button.name}
         </button>
       ))}
+      <Prettify />
 
       <AceEditor
         name="variables-editor"

@@ -4,7 +4,6 @@ import AceEditor from 'react-ace';
 import 'ace-builds/src-noconflict/mode-graphqlschema';
 import { API_OPTIONS } from '@/common/api-path';
 import { ToastContainer, toast } from 'react-toastify';
-import { Prettify } from '@/common/prettify';
 import { EditorTools } from '@/components/editor-tools/editor-tools';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { setQuery } from '@/redux/editor/editorSlice';
@@ -143,7 +142,7 @@ export const EditorQraphqlRequest = () => {
           />
 
           <EditorTools />
-          <Prettify />
+
           <button
             className="bg-slate-700 hover:bg-slate-800 text-white font-bold py-2 px-4 rounded"
             onClick={executeQuery}

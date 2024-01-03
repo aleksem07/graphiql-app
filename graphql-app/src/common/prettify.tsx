@@ -94,6 +94,8 @@ export const Prettify = () => {
   return (
     <>
       <button
+        type="button"
+        data-testid="prettify-button"
         className="bg-blue-500 hover:bg-blue-700 font-bold py-2 px-4 rounded mt-4"
         onClick={handleEditorChange}
       >
