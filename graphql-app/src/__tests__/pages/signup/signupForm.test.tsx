@@ -46,7 +46,7 @@ describe('SignUpForm', () => {
     const nameInput = screen.getByPlaceholderText(/name/i);
     const emailInput = screen.getByPlaceholderText(/email/i);
     const passwordInputs = screen.getAllByPlaceholderText(/password/i);
-    const submitButton = screen.getByRole('button', { name: /sign in/i });
+    const submitButton = screen.getByRole('button', { name: /sign up/i });
 
     fireEvent.change(nameInput, { target: { value: testName } });
     fireEvent.change(emailInput, { target: { value: validEmail } });

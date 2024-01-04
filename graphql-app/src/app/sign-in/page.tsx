@@ -12,7 +12,7 @@ export default function SignInPage() {
   const language = 'en';
 
   return (
-    <main className="flex-1 flex flex-col items-center justify-center">
+    <main className="mx-2 flex-1 flex flex-col items-center justify-center">
       <AuthGuard>
         <h1 className="mb-4">{translation.buttons.signIn[language]}</h1>
         <SignInForm />
