@@ -37,6 +37,7 @@ export const EditorQraphqlRequest = () => {
   const handleCustomApiChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (isCustomApi) {
       setApi(event.target.value);
+      setIsDocsOpened(false);
     }
   };
 
@@ -49,6 +50,7 @@ export const EditorQraphqlRequest = () => {
       setIsCustomApi(false);
       setApi(selectedApi);
     }
+    setIsDocsOpened(false);
   };
 
   const handleEditorChange = (value: string | undefined) => {

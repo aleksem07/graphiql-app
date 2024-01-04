@@ -51,7 +51,7 @@ export default function Documentation({ url, request }: apiType) {
       </h3>
     );
   return (
-    <section className="absolute left-8 z-10 sm:static max-w-[80vw] sm:w-1/4 sm:min-w-[200px] overflow-scroll max-h-[80vh] border-l border-t border-gray-300 p-2 bg-white">
+    <section className="absolute left-8 z-10 sm:static max-w-[80vw] sm:w-1/4 sm:min-w-[200px] overflow-y-auto max-h-[80vh] border-l border-t border-gray-300 p-2 bg-white resize-x">
       <Suspense fallback={<Skeleton />}>
         {isLoading && <Skeleton />}
         {isError && ApiError && (

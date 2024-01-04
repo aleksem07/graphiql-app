@@ -83,21 +83,21 @@ export default function Schema({ graphQLSchema }: { graphQLSchema: GraphQLSchema
         typeData &&
         typeData.map(([key, value]) => {
           return (
-            <div key={key}>
+            <div key={key} className="text-sm">
               <span
-                className="text-blue-700 text-sm cursor-pointer hover:underline"
+                className="text-blue-700 cursor-pointer hover:underline"
                 onClick={() => console.log(key)}
               >
                 {`${value.name}`}
               </span>
-              {value.args && value.args.length && (
+              {value.args && value.args.length > 0 && (
                 <>
                   <span>{'('}</span>
                   {value.args.map((arg, ind) => (
                     <p className="inline" key={ind}>
-                      <span className="text-gray-500 text-sm">{`${arg.name}: `}</span>
+                      <span className="text-gray-500 ">{`${arg.name}: `}</span>
                       <span
-                        className="text-orange-700 text-sm cursor-pointer hover:underline"
+                        className="text-orange-700 cursor-pointer hover:underline"
                         onClick={(e) =>
                           e.target instanceof HTMLSpanElement && e.target.textContent
                             ? handleTypeClick(e.target.textContent)
@@ -114,19 +114,18 @@ export default function Schema({ graphQLSchema }: { graphQLSchema: GraphQLSchema
                   <span>{')'}</span>
                 </>
               )}
+              {': '}
               <span
-                className="text-orange-700 text-sm cursor-pointer hover:underline"
+                className="text-orange-700 cursor-pointer hover:underline"
                 onClick={(e) =>
                   e.target instanceof HTMLSpanElement && e.target.textContent
                     ? handleTypeClick(e.target.textContent)
                     : null
                 }
               >
-                {`: ${
-                  value.type instanceof GraphQLList
-                    ? value.type.ofType.toString()
-                    : value.type.toString()
-                }`}
+                {value.type instanceof GraphQLList
+                  ? value.type.ofType.toString()
+                  : value.type.toString()}
               </span>
               <p className="text-xs text-gray-500 mt-1 mb-3">{value.description}</p>
             </div>
