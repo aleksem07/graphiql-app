@@ -1,40 +1,38 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen, fireEvent } from '@testing-library/react';
 import { Prettify } from '@/common/prettify';
 import { Providers } from '@/redux/provider';
+import { toast } from 'react-toastify';
 
 describe('Prettify', () => {
-  it('should render correctly', () => {
+  it('should render a button with the text "Prettify"', () => {
     render(
       <Providers>
         <Prettify />
       </Providers>
     );
-    const prettify = screen.getByTestId('prettify-button');
-
-    expect(prettify).toBeInTheDocument();
+    const button = screen.getByTestId('prettify-button');
+    expect(button).toBeInTheDocument();
   });
 
-  // it('should call setQuery with the prettified query when the button is clicked', () => {
-  //   const mockDispatch = jest.fn();
-  //   const query = '{characters{results{name status}}}';
-  //   const prettifiedQuery =
-  //     '{\n  characters {\n    results {\n      name\n      status\n    }\n  }\n}';
+  it('should dispatch setQuery with prettified query and show success toast on button click', () => {
+    const mockDispatch = jest.fn();
+    const mockToast = jest.spyOn(toast, 'success');
+    const query = 'test';
 
-  //   jest.spyOn(require('@/redux/hooks'), 'useAppSelector').mockReturnValue(query);
+    jest.mock('../../redux/hooks', () => ({
+      useAppSelector: jest.fn().mockReturnValue(query),
+      useAppDispatch: jest.fn().mockReturnValue(mockDispatch),
+    }));
 
-  //   jest.spyOn(require('@/redux/hooks'), 'useAppDispatch').mockReturnValue(mockDispatch);
+    render(
+      <Providers>
+        <Prettify />
+      </Providers>
+    );
 
-  //   render(
-  //     <Providers>
-  //       <Prettify />
-  //     </Providers>
-  //   );
+    const button = screen.getByTestId('prettify-button');
+    fireEvent.click(button);
 
-  //   const button = screen.getByTestId('prettify-button');
-  //   fireEvent.click(button);
-
-  //   expect(mockDispatch).toHaveBeenCalledWith({
-  //     query: prettifiedQuery,
-  //   });
-  // });
+    expect(mockToast).toHaveBeenCalledWith('Prettified successfully!');
+  });
 });
