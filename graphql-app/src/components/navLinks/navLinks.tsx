@@ -11,14 +11,12 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faShareFromSquare } from '@fortawesome/free-regular-svg-icons';
 
 export default function NavLinks() {
-  const router = useRouter();
   const [user, loading] = useAuthState(auth);
   const userEmail = user?.email;
   const language = 'en';
 
   const handleLogout = () => {
     logout();
-    router.push(AppRoutes.HOME);
   };
 
   useEffect(() => {
