@@ -2,6 +2,7 @@ import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { EditorQraphqlRequest } from '@/app/graphql/editor';
 import ace from 'ace-builds';
 import { Providers } from '@/redux/provider';
+import { toast } from 'react-toastify';
 
 ace.config.set('basePath', '@/app/graphql/editor');
 
@@ -13,14 +14,33 @@ describe('EditorQraphqlRequest', () => {
       </Providers>
     );
     const editor = screen.getByTestId('api-select');
+    const customApiInput = screen.getByPlaceholderText('Enter Custom API URL');
     const customApi = screen.getByTestId('editor');
     const responce = screen.getByTestId('response');
     const executeButton = screen.getByTestId('execute-button');
 
     expect(editor).toBeInTheDocument();
+    expect(customApiInput).toBeInTheDocument();
     expect(customApi).toBeInTheDocument();
     expect(responce).toBeInTheDocument();
     expect(executeButton).toBeInTheDocument();
+  });
+
+  it('should display an error toast when the API request fails', async () => {
+    render(
+      <Providers>
+        <EditorQraphqlRequest />
+      </Providers>
+    );
+
+    const executeButton = screen.getByTestId('execute-button');
+    const toastErrorSpy = jest.spyOn(toast, 'error');
+
+    fireEvent.click(executeButton);
+
+    await waitFor(() => {
+      expect(toastErrorSpy).toHaveBeenCalledWith('Please select an API endpoint');
+    });
   });
 
   it('allows entering a custom API URL', () => {
