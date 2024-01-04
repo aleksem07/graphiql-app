@@ -12,7 +12,6 @@ import FirstPageSchema from './firstPageSchema';
 
 export default function Schema({ graphQLSchema }: { graphQLSchema: GraphQLSchema }) {
   const [heading, setHeading] = useState<string | null>(null);
-  const [rootHeading, setRootHeading] = useState<string>('Root Types');
   const [docsDescription, setDocsDescription] = useState<string>(
     'A GraphQL schema provides a root type for each kind of operation.'
   );
@@ -27,15 +26,12 @@ export default function Schema({ graphQLSchema }: { graphQLSchema: GraphQLSchema
     setHeading(cleanedType);
     const typeInfo = graphQLSchema.getType(cleanedType);
     setDocsDescription(typeInfo?.description ?? '');
-    setRootHeading('');
     setIsFirstPage(false);
     setTypeData(null);
-    console.log('type: ', type, 'cleanedType', cleanedType);
     const typeFields =
       typeInfo instanceof GraphQLObjectType || typeInfo instanceof GraphQLInputObjectType
         ? typeInfo.getFields()
         : null;
-    console.log(typeFields);
     setValues(typeInfo instanceof GraphQLEnumType ? typeInfo.getValues() : null);
     if (typeFields) {
       const typeFieldsArray = Object.entries(typeFields).filter(([, value]) => {
@@ -76,7 +72,6 @@ export default function Schema({ graphQLSchema }: { graphQLSchema: GraphQLSchema
             </button>
           </h3>
           <p className="text-sm mb-2">{docsDescription}</p>
-          <h5 className="text-sm font-semibold">{rootHeading}</h5>
         </>
       )}
       {!isFirstPage &&
@@ -84,12 +79,7 @@ export default function Schema({ graphQLSchema }: { graphQLSchema: GraphQLSchema
         typeData.map(([key, value]) => {
           return (
             <div key={key} className="text-sm">
-              <span
-                className="text-blue-700 cursor-pointer hover:underline"
-                onClick={() => console.log(key)}
-              >
-                {`${value.name}`}
-              </span>
+              <span className="text-blue-700">{`${value.name}`}</span>
               {value.args && value.args.length > 0 && (
                 <>
                   <span>{'('}</span>
