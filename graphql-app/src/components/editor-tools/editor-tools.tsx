@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import AceEditor from 'react-ace';
 import 'ace-builds/src-noconflict/mode-graphqlschema';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
@@ -13,7 +13,6 @@ export const EditorTools = () => {
   const [isHeaders, setIsHeaders] = useState(false);
   const CLOSE_EDITOR_TOOLS = '0vh';
   const OPEN_EDITOR_TOOLS = '15vh';
-  const [heightVariablesEditor, setHeightEditorTools] = useState(CLOSE_EDITOR_TOOLS);
   const BUTTONS = [
     {
       name: 'Variables',
@@ -30,13 +29,7 @@ export const EditorTools = () => {
   const variables = useAppSelector((state: RootState) => state.editorSlice.variables);
   const headers = useAppSelector((state: RootState) => state.editorSlice.headers);
 
-  useEffect(() => {
-    if (isOpen) {
-      setHeightEditorTools(OPEN_EDITOR_TOOLS);
-    } else {
-      setHeightEditorTools(CLOSE_EDITOR_TOOLS);
-    }
-  }, [isOpen]);
+  const heightVariablesEditor = isOpen ? OPEN_EDITOR_TOOLS : CLOSE_EDITOR_TOOLS;
 
   const buttonHandlers: Record<string, () => void> = {
     variables: () => {

@@ -11,26 +11,8 @@ export const Prettify = () => {
 
   const handleIndentation = () => ' '.repeat(TAB_SIZE * indentation);
 
-  const linesArr = query
-    ?.split('')
-    .map((item, index, array) => {
-      if (item === '{' || item === '}') {
-        if (item === '{' && array[index + 1] !== '\n') {
-          return `${item}\n`;
-        }
-        if (item === '}' && array[index - 1] !== '\n') {
-          return `\n${item}`;
-        }
-      }
-      if (item === ' ' && array[index + 1] !== '{' && !array[index - 1].includes(':')) {
-        return `\n${item}`;
-      }
-
-      return item;
-    })
-    .join('')
-    .split('\n')
-    .filter((item) => item.trim() !== '');
+  const regex = /(\{|\}|\s(?!\{)(?<!:))/g;
+  const linesArr = query?.split(regex).filter((item) => item.trim() !== '');
 
   const lineWithoutSpace = linesArr
     ?.map((item, index, array) => {
