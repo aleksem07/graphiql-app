@@ -14,6 +14,7 @@ export const EditorQraphqlRequest = () => {
   const [getResponse, setResponse] = useState('');
   const [api, setApi] = useState('');
   const [isCustomApi, setIsCustomApi] = useState(true);
+  const [isReadOnly, setIsReadOnly] = useState(false);
   const dispatch = useAppDispatch();
   const query = useAppSelector((state: RootState) => state.editorSlice.query);
   const variables = parseJson(
@@ -127,6 +128,7 @@ export const EditorQraphqlRequest = () => {
       <div className="grid grid-cols-2 w-full flex-1 gap-2 pb-2">
         <div className="flex flex-col" data-testid="editor" onKeyDown={handleKeyDown}>
           <AceEditor
+            {...(isReadOnly && { readOnly: true })}
             fontSize={14}
             setOptions={{
               showLineNumbers: true,
@@ -136,20 +138,30 @@ export const EditorQraphqlRequest = () => {
             width="100%"
             height="60vh"
             mode="graphqlschema"
-            className="flex-1 border border-gray-300 rounded text-black"
+            className={
+              isReadOnly ? 'bg-gray-300' : 'flex-1 border border-gray-300 rounded text-black'
+            }
             value={query}
             onChange={handleEditorChange}
           />
 
           <EditorTools />
 
-          <button
-            className="bg-slate-700 hover:bg-slate-800 text-white font-bold py-2 px-4 rounded"
-            onClick={executeQuery}
-            data-testid="execute-button"
-          >
-            Execute Query
-          </button>
+          <div className="flex gap-2">
+            <button
+              className="bg-slate-700 hover:bg-slate-800 text-white font-bold py-2 px-4 rounded"
+              onClick={executeQuery}
+              data-testid="execute-button"
+            >
+              Execute Query
+            </button>
+            <button
+              className="bg-slate-700 hover:bg-slate-800 text-white font-bold py-2 px-4 rounded"
+              onClick={() => setIsReadOnly(!isReadOnly)}
+            >
+              {isReadOnly ? 'Edit' : 'Read Only'}
+            </button>
+          </div>
         </div>
 
         <div className="flex-1 p-2 bg-gray-200 rounded" data-testid="response">
