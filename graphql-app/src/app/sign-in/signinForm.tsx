@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useAuthState } from 'react-firebase-hooks/auth';
@@ -63,7 +63,7 @@ export default function SignInForm() {
         onFocus={() => setErrorInSignIn('')}
         {...register('email', { required: true })}
       />
-      <p className="text-red-500 text-xs mb-1 text-left h-4">{errors.email?.message}</p>
+      <p className="text-red-500 text-xs mb-1 text-left h-4">{errors.email?.message?.toString()}</p>
       <div className="relative">
         <input
           type={showPassword ? 'text' : 'password'}
@@ -80,7 +80,9 @@ export default function SignInForm() {
           {showPassword ? <FontAwesomeIcon icon={faEyeSlash} /> : <FontAwesomeIcon icon={faEye} />}
         </span>
       </div>
-      <p className="text-red-500 text-xs mb-1 text-left h-4">{errors.password?.message}</p>
+      <p className="text-red-500 text-xs mb-1 text-left h-4">
+        {errors.password?.message?.toString()}
+      </p>
 
       <input
         type="submit"

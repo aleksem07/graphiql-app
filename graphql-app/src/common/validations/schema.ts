@@ -10,7 +10,7 @@ import {
 export const validationSchemaSignUp = object().shape({
   userName: string()
     .required()
-    .matches(/\p{Lu}/u, 'Name should start with a capital letter'),
+    .matches(/^\p{Lu}/u, 'Name should start with a capital letter'),
   email: string().required().email(),
   password: string()
     .required()
