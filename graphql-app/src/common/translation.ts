@@ -44,6 +44,22 @@ const translation = {
       en: '404 Page not found',
       ru: '404 Страница не найдена',
     },
+    selectApi: {
+      en: 'Please select an API endpoint',
+      ru: 'Выберите API-адрес',
+    },
+    noQuery: {
+      en: 'Please enter a query',
+      ru: 'Пожалуйста, введите запрос',
+    },
+    statusCode: {
+      en: 'status code',
+      ru: 'статус код',
+    },
+    unexpectedError: {
+      en: 'An unexpected error occurred',
+      ru: 'Произошла непредвиденная ошибка',
+    },
   },
   auth: {
     email: {
@@ -85,6 +101,40 @@ const translation = {
     alreadyHaveAccount: {
       en: 'Already have an account?',
       ru: 'Уже есть аккаунт?',
+    },
+  },
+  editor: {
+    querySuccess: {
+      en: 'Query executed successfully',
+      ru: 'Запрос успешно выполнен',
+    },
+    customApi: {
+      en: 'Enter Custom API URL',
+      ru: 'Введите адрес API',
+    },
+    enterGraphqlQuery: {
+      en: 'Enter GraphQL query here \nPress Ctrl + Enter to execute',
+      ru: 'Введите запрос GraphQL здесь\nНажмите Ctrl + Enter для выполнения',
+    },
+    executeQuery: {
+      en: 'Execute Query',
+      ru: 'Выполнить запрос',
+    },
+    headers: {
+      en: 'Headers',
+      ru: 'Заголовки',
+    },
+    variables: {
+      en: 'Variables',
+      ru: 'Переменные',
+    },
+    show: {
+      en: 'Show',
+      ru: 'Показать',
+    },
+    hide: {
+      en: 'Hide',
+      ru: 'Скрыть',
     },
   },
 };

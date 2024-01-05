@@ -1,13 +1,15 @@
 import Link from 'next/link';
 import type { Metadata } from 'next';
 import translation from '@/common/translation';
+import { useContext } from 'react';
+import { LangContext } from '@/context/langContext';
 
 export const metadata: Metadata = {
   title: '404 Page not found',
 };
 
 export default function NotFound() {
-  const language = 'en';
+  const { language } = useContext(LangContext);
 
   return (
     <main className="flex-1 flex items-center justify-center">
