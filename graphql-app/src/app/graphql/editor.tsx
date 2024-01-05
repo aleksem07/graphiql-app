@@ -41,11 +41,7 @@ export const EditorQraphqlRequest = () => {
   };
 
   const handleEditorChange = (value: string | undefined) => {
-    if (value) {
-      dispatch(setQuery({ query: value }));
-    } else {
-      dispatch(setQuery({ query: '' }));
-    }
+    value ? dispatch(setQuery({ query: value })) : dispatch(setQuery({ query: '' }));
   };
 
   const executeQuery = async () => {
@@ -69,27 +65,24 @@ export const EditorQraphqlRequest = () => {
         body: JSON.stringify({ query, variables }),
       });
 
+      const data = await response.json();
+
       if (!response.ok) {
-        const data = await response.json();
-        const errorCode = await response.status;
+        const errorCode = response.status;
         const errorMessage = data.errors
-          .map((error: { message: string }) => error.message)
+          .map((error: { message: string }) => error.message || 'Unknown error')
           .join(', ');
         toast.error(`status code ${errorCode}\n${errorMessage}`);
         setResponse(JSON.stringify(data, null, 2));
         return;
       }
 
-      const data = await response.json();
       setResponse(JSON.stringify(data, null, 2));
       toast.success('Query executed successfully');
     } catch (error) {
       if (error instanceof Error) {
         setResponse(error.message);
         toast.error(error.message);
-      } else {
-        toast.error('An unexpected error occurred');
-        console.error(error);
       }
     }
   };
