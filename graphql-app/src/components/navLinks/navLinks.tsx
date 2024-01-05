@@ -6,7 +6,6 @@ import translation from '@/common/translation';
 import { auth, logout } from '@/firebase';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faShareFromSquare } from '@fortawesome/free-regular-svg-icons';
 
