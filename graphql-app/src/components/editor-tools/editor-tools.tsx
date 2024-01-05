@@ -38,46 +38,39 @@ export const EditorTools = () => {
     }
   }, [isOpen]);
 
+  const buttonHandlers: Record<string, () => void> = {
+    variables: () => {
+      setIsOpen(true);
+      setIsVariables(true);
+      setIsHeaders(false);
+    },
+    headers: () => {
+      setIsOpen(true);
+      setIsHeaders(true);
+      setIsVariables(false);
+    },
+    'show-hide': () => {
+      setIsOpen(!isOpen);
+      !isHeaders && setIsVariables(true);
+    },
+  };
+
   const handleButtonChange = (evt: React.MouseEvent<HTMLButtonElement>) => {
     evt.preventDefault();
-    switch (evt.currentTarget.id) {
-      case 'variables': {
-        setIsOpen(true);
-        setIsVariables(true);
-        setIsHeaders(false);
-        break;
-      }
-      case 'headers': {
-        setIsOpen(true);
-        setIsHeaders(true);
-        setIsVariables(false);
-        break;
-      }
-      case 'show-hide': {
-        setIsOpen(!isOpen);
-        !isHeaders && setIsVariables(true);
-        break;
-      }
-      default: {
-        return;
-      }
+    const buttonId = evt.currentTarget.id;
+    const buttonHandler = buttonHandlers[buttonId];
+    if (buttonHandler) {
+      buttonHandler();
     }
   };
 
   const handleEditorChange = (value: string | undefined) => {
-    if (value) {
-      if (isVariables) {
-        dispatch(setVariables({ variables: value }));
-      } else if (isHeaders) {
-        dispatch(setHeaders({ headers: value }));
-      }
-    } else {
-      if (isVariables) {
-        dispatch(setVariables({ variables: '' }));
-      } else if (isHeaders) {
-        dispatch(setHeaders({ headers: '' }));
-      }
-    }
+    const dispatchValue = value ? value : '';
+    dispatch(
+      isVariables
+        ? setVariables({ variables: dispatchValue })
+        : setHeaders({ headers: dispatchValue })
+    );
   };
 
   return (

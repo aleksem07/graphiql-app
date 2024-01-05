@@ -11,12 +11,8 @@ export const Prettify = () => {
 
   const handleIndentation = () => ' '.repeat(TAB_SIZE * indentation);
 
-  if (typeof query === 'undefined') {
-    return;
-  }
-
   const linesArr = query
-    .split('')
+    ?.split('')
     .map((item, index, array) => {
       if (item === '{' || item === '}') {
         if (item === '{' && array[index + 1] !== '\n') {
@@ -37,7 +33,7 @@ export const Prettify = () => {
     .filter((item) => item.trim() !== '');
 
   const lineWithoutSpace = linesArr
-    .map((item, index, array) => {
+    ?.map((item, index, array) => {
       if (item.trim().at(-1) === ':') {
         const newValue = `${item.concat(array[index + 1].trim())}`;
         array[index + 1] = ' ';
@@ -53,7 +49,7 @@ export const Prettify = () => {
     })
     .filter((item) => item.trim() !== '');
 
-  const prettyLines = lineWithoutSpace.map((line) => {
+  const prettyLines = lineWithoutSpace?.map((line) => {
     return `${handleIndentation()}${line.trim()}`
       .split('')
       .map((item, index, array) => {
@@ -80,15 +76,15 @@ export const Prettify = () => {
   });
 
   const closedBracketsPretty = prettyLines
-    .filter((item) => item.trim() === '}')
+    ?.filter((item) => item.trim() === '}')
     .map((item, i) => (i === 0 ? `\n${item.slice(TAB_SIZE)}` : item.slice(TAB_SIZE)))
     .join('\n');
   const prettyLinesWithoutClosedBrackets = prettyLines
-    .filter((item) => item.trim() !== '}')
+    ?.filter((item) => item.trim() !== '}')
     .join('\n');
 
   const handleEditorChange = () => {
-    const prettifyQuery = prettyLinesWithoutClosedBrackets.concat(closedBracketsPretty);
+    const prettifyQuery = prettyLinesWithoutClosedBrackets?.concat(closedBracketsPretty || '');
     dispatch(setQuery({ query: prettifyQuery }));
     toast.success('Prettified successfully!');
   };
