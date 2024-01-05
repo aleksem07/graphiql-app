@@ -139,7 +139,7 @@ export const EditorQraphqlRequest = () => {
             height="60vh"
             mode="graphqlschema"
             className={
-              isReadOnly ? 'bg-gray-300' : 'flex-1 border border-gray-300 rounded text-black'
+              isReadOnly ? 'bg-gray-200' : 'flex-1 border border-gray-300 rounded text-black'
             }
             value={query}
             onChange={handleEditorChange}
