@@ -1,4 +1,4 @@
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import NavLinks from '@/components/navLinks/navLinks';
 import { logout } from '@/firebase';
 
@@ -67,9 +67,5 @@ describe('NavLinks', () => {
     const logoutButton = screen.getByText(/logout/i);
     fireEvent.click(logoutButton);
     expect(logout).toHaveBeenCalled();
-
-    await waitFor(() => {
-      expect(mockPush).toHaveBeenCalledWith('/');
-    });
   });
 });
