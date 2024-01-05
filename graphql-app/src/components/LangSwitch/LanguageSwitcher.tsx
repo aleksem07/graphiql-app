@@ -1,15 +1,12 @@
 'use client';
-import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { setLanguage } from '../../redux/lang/languageSlice';
-import { RootState } from '../../redux/store';
+import { useContext } from 'react';
+import { LangContext } from '@/context/langContext';
 
-const LangSwitch = () => {
-  const dispatch = useDispatch();
-  const language = useSelector((state: RootState) => state.language.value);
+function LangSwitch() {
+  const { language, updateLanguage } = useContext(LangContext);
 
   const toggleLanguage = () => {
-    dispatch(setLanguage(language === 'en' ? 'ru' : 'en'));
+    updateLanguage(language === 'en' ? 'ru' : 'en');
   };
 
   return (
@@ -18,10 +15,10 @@ const LangSwitch = () => {
         onClick={toggleLanguage}
         className="w-32 px-4 py-2 bg-white hover:bg-gray-100 text-gray-800 font-bold rounded"
       >
-        {language === 'en' ? 'Русский' : 'English'}
+        {language === 'en' ? 'Ру' : 'En'}
       </button>
     </div>
   );
-};
+}
 
 export default LangSwitch;

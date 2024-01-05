@@ -5,7 +5,7 @@ import Header from '@/components/header/header';
 import Footer from '@/components/footer/footer';
 import { Providers } from '@/redux/provider';
 import 'react-toastify/dist/ReactToastify.css';
-import { LangProvider } from '@/context/langContext';
+import { LangState } from '@/context/langContext';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -19,11 +19,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en">
       <body className={`flex flex-col min-h-screen ${inter.className}`}>
         <Providers>
-          <LangProvider>
+          <LangState>
             <Header />
             {children}
             <Footer />
-          </LangProvider>
+          </LangState>
         </Providers>
       </body>
     </html>
