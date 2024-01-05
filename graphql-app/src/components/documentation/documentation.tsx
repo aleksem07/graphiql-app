@@ -40,7 +40,6 @@ export default function Documentation({ url, request }: apiType) {
   }, [url, data]);
 
   useEffect(() => {
-    console.log(error);
     if (error) setApiError(error as FetchBaseQueryError | SerializedError);
   }, [error]);
 
