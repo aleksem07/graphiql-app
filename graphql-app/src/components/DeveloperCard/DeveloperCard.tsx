@@ -21,7 +21,13 @@ export const DeveloperCard = ({
         />
       </div>
     </a>
-    <h4 className="font-bold pt-10">{developer.name[lang]}</h4>
-    <p className="text-justify">{developer.description[lang]}</p>
+    <h4 className="font-bold pt-10 text-center">{developer.name[lang]}</h4>
+    <ul className="nolist">
+      {developer.description[lang].map((description) => (
+        <li key={description} className="text-center">
+          {description}
+        </li>
+      ))}
+    </ul>
   </div>
 );

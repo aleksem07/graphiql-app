@@ -4,7 +4,7 @@ export interface Developer {
   name: Record<AvailableLangs, string>;
   githubLink: string;
   imageLink: string;
-  description: Record<AvailableLangs, string>;
+  description: Record<AvailableLangs, string[]>;
 }
 
 export interface SectionInfo {
@@ -22,8 +22,18 @@ export const developers: Developer[] = [
     githubLink: 'https://github.com/IrinaOsp',
     imageLink: 'https://avatars.githubusercontent.com/u/108676588?v=4',
     description: {
-      en: 'Junior Frontend Developer with a keen interest in building user-centric web interfaces. Proficient in HTML, CSS, and JavaScript. Dedicated to learning and applying new technologies, I aim to grow professionally in a collaborative environment.',
-      ru: '',
+      en: [
+        'signin and signup pages',
+        'authorization & protected routes',
+        'localization',
+        'GraphQL schema',
+      ],
+      ru: [
+        'страницы входа и регистрации',
+        'авторизация и защищенные маршруты',
+        'локализация',
+        'схема GraphQL',
+      ],
     },
   },
   {
@@ -34,8 +44,19 @@ export const developers: Developer[] = [
     githubLink: 'https://github.com/aleksem07',
     imageLink: 'https://avatars.githubusercontent.com/u/89778523?v=4',
     description: {
-      en: 'Frontend developer skilled in HTML, CSS, and JavaScript. Focused on creating engaging web experiences, I bring a strong foundation in web technologies. I am committed to ongoing learning and leveraging my skills in a team setting.',
-      ru: '',
+      en: [
+        'repository & tasks management tool organization',
+        'editor page with headers and variables',
+        'GraphQL requests',
+        'query prettifying',
+      ],
+      ru: [
+        'организация репозитория и программы управления задачами',
+        'GraphQL-запросы',
+        'страница редактора с заголовками и переменными',
+        'обработка ошибок',
+        'форматирование запросов',
+      ],
     },
   },
   {
@@ -46,8 +67,8 @@ export const developers: Developer[] = [
     githubLink: 'https://github.com/JuliaAvona',
     imageLink: 'https://avatars.githubusercontent.com/u/94717941?v=4',
     description: {
-      en: 'Currently studying at The Rolling Scopes School of React, I am passionate about frontend development. With a focus on HTML, CSS, and JavaScript, I am eager to apply my knowledge and continue growing in a dynamic professional environment.',
-      ru: '',
+      en: ['welcome page', '      sticky header'],
+      ru: ['страница приветствия', '"липкий" хедер'],
     },
   },
 ];
