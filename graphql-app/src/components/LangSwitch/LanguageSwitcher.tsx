@@ -10,10 +10,10 @@ function LangSwitch() {
   };
 
   return (
-    <div className="flex justify-center my-4">
+    <div className="flex justify-center my-1">
       <button
         onClick={toggleLanguage}
-        className="w-32 px-4 py-2 bg-white hover:bg-gray-100 text-gray-800 font-bold rounded"
+        className="w-18 px-2 py-2 bg-white hover:bg-gray-100 text-gray-800 font-bold rounded"
       >
         {language === 'en' ? 'Ру' : 'En'}
       </button>

@@ -36,8 +36,8 @@ export default function Header() {
         </Link>
         <nav className="space-x-2 sm:space-x-4 ml-8 relative flex items-center justify-center">
           <NavLinks />
+          <LangSwitch />
         </nav>
-        <LangSwitch />
       </div>
     </header>
   );
