@@ -15,8 +15,14 @@ export const LangContext = createContext<LangContextType>({
 });
 
 export const LangState = ({ children }: { children: React.ReactNode }) => {
-  const [language, setLanguage] = useState<AvailableLangs>('en');
-  const updateLanguage = (language: AvailableLangs) => setLanguage(language);
+  const langFromLS = localStorage.getItem('langGRAPHQL');
+  const [language, setLanguage] = useState<AvailableLangs>(
+    langFromLS === 'en' || langFromLS === 'ru' ? langFromLS : 'en'
+  );
+  const updateLanguage = (language: AvailableLangs) => {
+    setLanguage(language);
+    localStorage.setItem('langGRAPHQL', language);
+  };
   return (
     <LangContext.Provider value={{ language, updateLanguage }}>{children}</LangContext.Provider>
   );
