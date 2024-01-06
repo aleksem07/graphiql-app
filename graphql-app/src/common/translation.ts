@@ -137,6 +137,20 @@ const translation = {
       ru: 'Скрыть',
     },
   },
+  welcome: {
+    aboutUs: {
+      en: 'About Us',
+      ru: 'О нас',
+    },
+    welcome: {
+      en: 'Welcome to GraphiQL App',
+      ru: 'Добро пожаловать в приложение GraphiQL',
+    },
+    learnMore: {
+      en: 'Learn more...',
+      ru: 'Узнать больше...',
+    },
+  },
 };
 
 export default translation;

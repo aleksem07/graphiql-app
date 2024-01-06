@@ -2,8 +2,10 @@
 
 import { createContext, useState } from 'react';
 
+export type AvailableLangs = 'en' | 'ru';
+
 type LangContextType = {
-  language: 'en' | 'ru';
+  language: AvailableLangs;
   updateLanguage: (language: 'en' | 'ru') => void;
 };
 
@@ -13,8 +15,8 @@ export const LangContext = createContext<LangContextType>({
 });
 
 export const LangState = ({ children }: { children: React.ReactNode }) => {
-  const [language, setLanguage] = useState<'en' | 'ru'>('en');
-  const updateLanguage = (language: 'en' | 'ru') => setLanguage(language);
+  const [language, setLanguage] = useState<AvailableLangs>('en');
+  const updateLanguage = (language: AvailableLangs) => setLanguage(language);
   return (
     <LangContext.Provider value={{ language, updateLanguage }}>{children}</LangContext.Provider>
   );
