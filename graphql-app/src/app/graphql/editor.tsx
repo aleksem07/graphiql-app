@@ -188,9 +188,16 @@ export const EditorQraphqlRequest = () => {
             </button>
           </div>
 
-          <div className="flex-1 p-2 bg-gray-200 rounded" data-testid="response">
-            <pre className="whitespace-pre-wrap">{getResponse}</pre>
-          </div>
+          <AceEditor
+            className="flex-1 border border-gray-300 rounded text-black"
+            data-testid="response"
+            setOptions={{ showLineNumbers: false }}
+            width="100%"
+            height="100%"
+            mode="json"
+            value={getResponse}
+            readOnly
+          />
         </div>
       </div>
       <ToastContainer position="bottom-right" />

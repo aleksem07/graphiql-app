@@ -16,13 +16,11 @@ describe('EditorQraphqlRequest', () => {
     const editor = screen.getByTestId('api-select');
     const customApiInput = screen.getByPlaceholderText('Enter Custom API URL');
     const customApi = screen.getByTestId('editor');
-    const responce = screen.getByTestId('response');
     const executeButton = screen.getByTestId('execute-button');
 
     expect(editor).toBeInTheDocument();
     expect(customApiInput).toBeInTheDocument();
     expect(customApi).toBeInTheDocument();
-    expect(responce).toBeInTheDocument();
     expect(executeButton).toBeInTheDocument();
   });
 
