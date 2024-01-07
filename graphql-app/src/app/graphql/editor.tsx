@@ -37,6 +37,18 @@ export const EditorQraphqlRequest = () => {
   );
   const [isDocsOpened, setIsDocsOpened] = useState(false);
   const [docsRequest, setDocsRequest] = useState<docsRequestEnum>(docsRequestEnum.docs);
+  const ICON_BUTTONS = [
+    {
+      name: 'docs',
+      title: translation.documentation.title[language],
+      icon: faFileText,
+    },
+    {
+      name: 'print',
+      title: translation.documentation.schemaTitle[language],
+      icon: faFilePowerpoint,
+    },
+  ];
 
   const handleCustomApiChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (isCustomApi) {
@@ -143,20 +155,17 @@ export const EditorQraphqlRequest = () => {
 
       <div className="flex w-full flex-wrap sm:flex-nowrap relative content-start">
         <div className="flex flex-col px-2 flex-wrap gap-1 sm:justify-center items-start sm:h-full pb-2 w-screen sm:w-fit h-fit">
-          <button
-            className="p-2 rounded border border-gray-300 hover:opacity-60 hover:bg-gray-200 cursor-pointer"
-            title={translation.documentation.title[language]}
-            onClick={() => handleDocsOpen(docsRequestEnum.docs)}
-          >
-            <FontAwesomeIcon icon={faFileText} />
-          </button>
-          <button
-            className="p-2 rounded border border-gray-300 hover:opacity-60 hover:bg-gray-200 cursor-pointer"
-            title={translation.documentation.schemaTitle[language]}
-            onClick={() => handleDocsOpen(docsRequestEnum.print)}
-          >
-            <FontAwesomeIcon icon={faFilePowerpoint} />
-          </button>
+          {ICON_BUTTONS.map(({ name, title, icon }) => (
+            <button
+              key={name}
+              className="p-2 rounded border border-gray-300 hover:opacity-60 hover:bg-gray-200 cursor-pointer"
+              title={title}
+              onClick={() => handleDocsOpen(name as docsRequestEnum)}
+            >
+              <FontAwesomeIcon icon={icon} />
+            </button>
+          ))}
+
           <Prettify />
         </div>
         {isDocsOpened && <Documentation url={api} request={docsRequest} lang={language} />}
