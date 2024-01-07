@@ -190,7 +190,6 @@ export const EditorQraphqlRequest = () => {
 
           <AceEditor
             className="flex-1 border border-gray-300 rounded text-black"
-            data-testid="response"
             setOptions={{ showLineNumbers: false }}
             width="100%"
             height="100%"

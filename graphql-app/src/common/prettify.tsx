@@ -37,39 +37,51 @@ export const Prettify = () => {
     })
     .filter((item) => item.trim() !== '');
 
-  const prettyLines = lineWithoutSpace?.map((line) => {
-    return `${handleIndentation()}${line.trim()}`
+  const prettyLines = lineWithoutSpace?.map((line, index, array) => {
+    return line
+      .trim()
       .split('')
-      .map((item, index, array) => {
-        if (item === '{') {
-          indentation += 1;
-
-          if (array[0] === '{') {
-            return `${item.trim()}`;
-          }
-
-          if (item === '{' && array[index - 1] !== ' ') {
-            return ` ${item}`;
-          }
+      .map((item, itemIndex) => {
+        switch (item) {
+          case '{':
+            indentation += 1;
+            if (index === 0 && itemIndex === 0) {
+              return `${item}\n`;
+            }
+            if (
+              array[index - 1] &&
+              array[index - 1].includes('(') &&
+              !array[index - 1].includes(')')
+            ) {
+              return `${item}`;
+            }
+            return ` ${item}\n`;
+          case '}':
+            indentation -= 1;
+            indentation < 0 ? (indentation = 0) : indentation;
+            if (array[index - 1] && array[index - 1].includes('}')) {
+              return `${handleIndentation()}${item}\n`;
+            }
+            if (array[index + 1] && array[index + 1].includes(')')) {
+              return `${item}`;
+            }
+            return `\n${handleIndentation()}${item}\n`;
+          default:
+            if (
+              array[index - 1] &&
+              (array[index - 1].includes('{') || array[index - 1].includes('}')) &&
+              itemIndex === 0
+            ) {
+              return `${handleIndentation()}${item}`;
+            }
+            if (item === ',' || item === ':') {
+              return `${item} `;
+            }
+            return item;
         }
-
-        if (item === '}') {
-          indentation -= 1;
-          indentation < 0 ? (indentation = 0) : indentation;
-        }
-
-        return item;
       })
       .join('');
   });
-
-  const closedBracketsPretty = prettyLines
-    ?.filter((item) => item.trim() === '}')
-    .map((item, i) => (i === 0 ? `\n${item.slice(TAB_SIZE)}` : item.slice(TAB_SIZE)))
-    .join('\n');
-  const prettyLinesWithoutClosedBrackets = prettyLines
-    ?.filter((item) => item.trim() !== '}')
-    .join('\n');
 
   const handleEditorChange = () => {
     const openingBracesCount = (query?.match(/{/g) || []).length;
@@ -88,7 +100,7 @@ export const Prettify = () => {
       return null;
     }
 
-    const prettifyQuery = prettyLinesWithoutClosedBrackets?.concat(closedBracketsPretty || '');
+    const prettifyQuery = prettyLines?.join('');
     dispatch(setQuery({ query: prettifyQuery }));
     toast.success(translation.editor.prettifyCompleted[language]);
   };
