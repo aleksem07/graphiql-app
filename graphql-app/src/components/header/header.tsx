@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { AppRoutes } from '@/common/routes';
 import NavLinks from '../navLinks/navLinks';
+import LangSwitch from '../LangSwitch/LanguageSwitcher';
 
 export default function Header() {
   const [isScrolled, setIsScrolled] = useState<boolean>(false);
@@ -35,6 +36,7 @@ export default function Header() {
         </Link>
         <nav className="space-x-2 sm:space-x-4 ml-8 relative flex items-center justify-center">
           <NavLinks />
+          <LangSwitch />
         </nav>
       </div>
     </header>

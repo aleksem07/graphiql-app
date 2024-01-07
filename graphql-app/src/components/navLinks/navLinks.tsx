@@ -5,15 +5,15 @@ import { AppRoutes } from '@/common/routes';
 import translation from '@/common/translation';
 import { auth, logout } from '@/firebase';
 import { useAuthState } from 'react-firebase-hooks/auth';
-import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useContext, useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faShareFromSquare } from '@fortawesome/free-regular-svg-icons';
+import { LangContext } from '@/context/langContext';
 
 export default function NavLinks() {
   const [user, loading] = useAuthState(auth);
   const userEmail = user?.email;
-  const language = 'en';
+  const { language } = useContext(LangContext);
 
   const handleLogout = () => {
     logout();
@@ -21,7 +21,8 @@ export default function NavLinks() {
 
   useEffect(() => {
     if (loading) return;
-  }, [loading]);
+    if (!user) handleLogout();
+  }, [loading, user]);
 
   const [isMobile, setIsMobile] = useState(false);
 
@@ -41,10 +42,10 @@ export default function NavLinks() {
       {!userEmail && (
         <>
           <Link href={AppRoutes.SING_IN} className="hover:text-gray-300">
-            Sign In
+            {translation.buttons.signIn[language]}
           </Link>
           <Link href={AppRoutes.SING_UP} className="hover:text-gray-300">
-            Sign Up
+            {translation.buttons.signUp[language]}
           </Link>
         </>
       )}

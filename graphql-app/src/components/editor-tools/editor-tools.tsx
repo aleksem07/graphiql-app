@@ -1,12 +1,16 @@
-import { useState } from 'react';
+'use client';
+import { useContext, useState } from 'react';
 import AceEditor from 'react-ace';
 import 'ace-builds/src-noconflict/mode-graphqlschema';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { RootState } from '@/redux/store';
 import { setHeaders, setVariables } from '@/redux/editor/editorSlice';
+import { LangContext } from '@/context/langContext';
+import translation from '@/common/translation';
 import { Prettify } from '@/common/prettify';
 
 export const EditorTools = () => {
+  const { language } = useContext(LangContext);
   const dispatch = useAppDispatch();
   const [isOpen, setIsOpen] = useState(false);
   const [isVariables, setIsVariables] = useState(false);
@@ -15,16 +19,20 @@ export const EditorTools = () => {
   const OPEN_EDITOR_TOOLS = '15vh';
   const BUTTONS = [
     {
-      name: 'Variables',
+      name: translation.editor.variables[language],
       id: 'variables',
       className: `border-r-2 ${isVariables && isOpen ? 'bg-gray-300' : ''}`,
     },
     {
-      name: 'Headers',
+      name: translation.editor.headers[language],
       id: 'headers',
       className: `border-r-2 ${isHeaders && isOpen ? 'bg-gray-300' : ''}`,
     },
-    { name: isOpen ? 'Hide' : 'Show', id: 'show-hide', className: 'float-right' },
+    {
+      name: isOpen ? translation.editor.hide[language] : translation.editor.show[language],
+      id: 'show-hide',
+      className: 'float-right',
+    },
   ];
   const variables = useAppSelector((state: RootState) => state.editorSlice.variables);
   const headers = useAppSelector((state: RootState) => state.editorSlice.headers);
