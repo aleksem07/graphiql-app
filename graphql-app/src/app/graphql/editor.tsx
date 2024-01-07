@@ -202,7 +202,7 @@ export const EditorQraphqlRequest = () => {
             setOptions={{ showLineNumbers: false }}
             width="100%"
             height="100%"
-            mode="json"
+            mode="graphqlschema"
             value={getResponse}
             readOnly
           />
