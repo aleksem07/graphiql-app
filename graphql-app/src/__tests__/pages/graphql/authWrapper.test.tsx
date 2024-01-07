@@ -4,6 +4,9 @@ import { render, screen, waitFor } from '@testing-library/react';
 import { redirect } from 'next/navigation';
 import { Providers } from '@/redux/provider';
 import {} from '../../../app/graphql/editor';
+import ace from 'ace-builds';
+
+ace.config.set('basePath', '@/app/graphql/editor');
 
 jest.mock('next/navigation');
 

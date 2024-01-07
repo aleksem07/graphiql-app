@@ -14,7 +14,6 @@ export const EditorQraphqlRequest = () => {
   const [getResponse, setResponse] = useState('');
   const [api, setApi] = useState('');
   const [isCustomApi, setIsCustomApi] = useState(true);
-  const [isReadOnly, setIsReadOnly] = useState(false);
   const dispatch = useAppDispatch();
   const query = useAppSelector((state: RootState) => state.editorSlice.query);
   const variables = parseJson(
@@ -128,7 +127,7 @@ export const EditorQraphqlRequest = () => {
       <div className="grid grid-cols-2 w-full flex-1 gap-2 pb-2">
         <div className="flex flex-col" data-testid="editor" onKeyDown={handleKeyDown}>
           <AceEditor
-            {...(isReadOnly && { readOnly: true })}
+            data-testid="response"
             fontSize={14}
             setOptions={{
               showLineNumbers: true,
@@ -138,9 +137,7 @@ export const EditorQraphqlRequest = () => {
             width="100%"
             height="60vh"
             mode="graphqlschema"
-            className={
-              isReadOnly ? 'bg-gray-200' : 'flex-1 border border-gray-300 rounded text-black'
-            }
+            className="flex-1 border border-gray-300 rounded text-black"
             value={query}
             onChange={handleEditorChange}
           />
@@ -155,18 +152,18 @@ export const EditorQraphqlRequest = () => {
             >
               Execute Query
             </button>
-            <button
-              className="bg-slate-700 hover:bg-slate-800 text-white font-bold py-2 px-4 rounded"
-              onClick={() => setIsReadOnly(!isReadOnly)}
-            >
-              {isReadOnly ? 'Edit' : 'Read Only'}
-            </button>
           </div>
         </div>
 
-        <div className="flex-1 p-2 bg-gray-200 rounded" data-testid="response">
-          <pre className="whitespace-pre-wrap">{getResponse}</pre>
-        </div>
+        <AceEditor
+          className="flex-1 border border-gray-300 rounded text-black"
+          setOptions={{ showLineNumbers: false }}
+          width="100%"
+          height="100%"
+          mode="json"
+          value={getResponse}
+          readOnly
+        />
       </div>
       <ToastContainer position="bottom-right" />
     </>
