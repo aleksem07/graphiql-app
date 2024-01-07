@@ -2,6 +2,11 @@
 
 exports[`SignInForm renders SignInForm correctly 1`] = `
 <div>
+  <h1
+    class="mb-4"
+  >
+    Sign In
+  </h1>
   <form
     class="w-full max-w-md bg-gray-300 p-6 rounded-md"
     novalidate=""

@@ -1,4 +1,8 @@
+'use client';
+import translation from '@/common/translation';
+import { LangContext } from '@/context/langContext';
 import { GraphQLSchema } from 'graphql/type';
+import { useContext } from 'react';
 
 type FirstPageProps = {
   graphQLSchema: GraphQLSchema;
@@ -6,6 +10,8 @@ type FirstPageProps = {
 };
 
 export default function FirstPageSchema({ graphQLSchema, handleTypeClick }: FirstPageProps) {
+  const { language } = useContext(LangContext);
+
   const root = graphQLSchema.getQueryType()?.name;
   const typeMap = graphQLSchema.getTypeMap();
   const types: string[] = Object.keys(typeMap).filter(
@@ -14,11 +20,11 @@ export default function FirstPageSchema({ graphQLSchema, handleTypeClick }: Firs
 
   return (
     <>
-      <h3 className="text-md font-semibold mb-2 relative">{'Documentation'}</h3>
-      <p className="text-sm mb-2">
-        {'A GraphQL schema provides a root type for each kind of operation.'}
-      </p>
-      <h5 className="text-sm font-semibold">{'Root Types'}</h5>
+      <h3 className="text-md font-semibold mb-2 relative">
+        {translation.documentation.documentation[language]}
+      </h3>
+      <p className="text-sm mb-2">{translation.documentation.description[language]}</p>
+      <h5 className="text-sm font-semibold">{translation.documentation.rootTypes[language]}</h5>
       {root && (
         <>
           <p className="text-blue-700 inline text-sm">query: </p>
@@ -28,7 +34,9 @@ export default function FirstPageSchema({ graphQLSchema, handleTypeClick }: Firs
           >
             {root}
           </span>
-          <h5 className="text-sm font-semibold">All Schema Types</h5>
+          <h5 className="text-sm font-semibold">
+            {translation.documentation.allSchemaType[language]}
+          </h5>
         </>
       )}
       {types &&

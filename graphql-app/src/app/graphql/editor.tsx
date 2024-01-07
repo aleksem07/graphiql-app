@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import AceEditor from 'react-ace';
 import 'ace-builds/src-noconflict/mode-graphqlschema';
 import { API_OPTIONS } from '@/common/api-path';
@@ -18,8 +18,11 @@ export enum docsRequestEnum {
   docs = 'docs',
   print = 'print',
 }
+import { LangContext } from '@/context/langContext';
+import translation from '@/common/translation';
 
 export const EditorQraphqlRequest = () => {
+  const { language } = useContext(LangContext);
   const [getResponse, setResponse] = useState('');
   const [api, setApi] = useState('');
   const [isCustomApi, setIsCustomApi] = useState(true);
@@ -64,12 +67,12 @@ export const EditorQraphqlRequest = () => {
   const executeQuery = async () => {
     try {
       if (!api) {
-        toast.error('Please select an API endpoint');
+        toast.error(translation.error.selectApi[language]);
         setResponse('');
       }
 
       if (!query) {
-        toast.error('Please enter a query');
+        toast.error(translation.error.noQuery[language]);
         setResponse('');
       }
 
@@ -88,20 +91,20 @@ export const EditorQraphqlRequest = () => {
         const errorMessage = data.errors
           .map((error: { message: string }) => error.message)
           .join(', ');
-        toast.error(`status code ${errorCode}\n${errorMessage}`);
+        toast.error(`${translation.error.statusCode[language]} ${errorCode}\n${errorMessage}`);
         setResponse(JSON.stringify(data, null, 2));
         return;
       }
 
       const data = await response.json();
       setResponse(JSON.stringify(data, null, 2));
-      toast.success('Query executed successfully');
+      toast.success(translation.editor.querySuccess[language]);
     } catch (error) {
       if (error instanceof Error) {
         setResponse(error.message);
         toast.error(error.message);
       } else {
-        toast.error('An unexpected error occurred');
+        toast.error(translation.error.unexpectedError[language]);
         console.error(error);
       }
     }
@@ -127,7 +130,7 @@ export const EditorQraphqlRequest = () => {
         >
           {API_OPTIONS.map(({ label, value }) => (
             <option key={value} value={value}>
-              {label}
+              {label === 'Custom API' ? translation.editor.customApi[language] : label}
             </option>
           ))}
         </select>
@@ -135,7 +138,7 @@ export const EditorQraphqlRequest = () => {
           <input
             className="w-full border border-gray-300 rounded p-2 text-black mt-2"
             type="text"
-            placeholder="Enter Custom API URL"
+            placeholder={translation.editor.enterCustomApi[language]}
             value={api}
             onChange={handleCustomApiChange}
           />
@@ -159,7 +162,7 @@ export const EditorQraphqlRequest = () => {
             <FontAwesomeIcon icon={faFilePowerpoint} />
           </button>
         </div>
-        {isDocsOpened && <Documentation url={api} request={docsRequest} />}
+        {isDocsOpened && <Documentation url={api} request={docsRequest} lang={language} />}
         <div className="grid grid-cols-2 w-full gap-2 pb-2 col-end-auto">
           <div className="flex flex-col" data-testid="editor" onKeyDown={handleKeyDown}>
             <AceEditor
@@ -168,7 +171,7 @@ export const EditorQraphqlRequest = () => {
                 showLineNumbers: true,
                 tabSize: 2,
               }}
-              placeholder={'Enter GraphQL query here \nPress Ctrl + Enter to execute'}
+              placeholder={translation.editor.enterGraphqlQuery[language]}
               width="100%"
               height="60vh"
               mode="graphqlschema"
@@ -184,7 +187,7 @@ export const EditorQraphqlRequest = () => {
               onClick={executeQuery}
               data-testid="execute-button"
             >
-              Execute Query
+              {translation.editor.executeQuery[language]}
             </button>
           </div>
 

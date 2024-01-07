@@ -7,13 +7,16 @@ import { setUserUrl } from '@/redux/user/userSlice';
 import { docsRequestEnum } from '@/app/graphql/editor';
 import { FetchBaseQueryError } from '@reduxjs/toolkit/query/react';
 import { SerializedError } from '@reduxjs/toolkit/react';
+import { AvailableLangs } from '@/context/langContext';
+import translation from '@/common/translation';
 
 type apiType = {
   url: string;
   request: docsRequestEnum;
+  lang: AvailableLangs;
 };
 
-export default function Documentation({ url, request }: apiType) {
+export default function Documentation({ url, request, lang }: apiType) {
   const [schema, setSchema] = useState<GraphQLSchema | null>();
   const [trigger, { data, isLoading, isError, error }] = useLazyGetSchemaQuery();
   const [schemaJSX, setSchemaJSX] = useState<JSX.Element | null>(null);
@@ -46,7 +49,7 @@ export default function Documentation({ url, request }: apiType) {
   if (!url)
     return (
       <h3 className="absolute left-8 sm:static p-2 text-md font-semibold text-red-500">
-        {'Please select an API'}
+        {translation.documentation.selectAPI[lang]}
       </h3>
     );
   return (
@@ -55,10 +58,14 @@ export default function Documentation({ url, request }: apiType) {
         {isLoading && <Skeleton />}
         {isError && ApiError && (
           <p className="p-2 text-md text-red-500">
-            Error {'status' in ApiError ? ApiError.status : `: ${ApiError.message}`}
+            {`${translation.error.error[lang]}${
+              'status' in ApiError ? ApiError.status : `: ${ApiError.message}`
+            }`}
           </p>
         )}
-        {isError && !ApiError && <p className="p-2 text-md text-red-500">Error occured</p>}
+        {isError && !ApiError && (
+          <p className="p-2 text-md text-red-500">{translation.error.unexpectedError[lang]}</p>
+        )}
         {schema && schemaJSX}
       </Suspense>
     </section>
