@@ -60,6 +60,10 @@ const translation = {
       en: 'An unexpected error occurred',
       ru: 'Произошла непредвиденная ошибка',
     },
+    error: {
+      en: 'Error',
+      ru: 'Ошибка',
+    },
   },
   auth: {
     email: {
@@ -109,6 +113,10 @@ const translation = {
       ru: 'Запрос успешно выполнен',
     },
     customApi: {
+      en: 'Custom API',
+      ru: 'Адрес API',
+    },
+    enterCustomApi: {
       en: 'Enter Custom API URL',
       ru: 'Введите адрес API',
     },
@@ -149,6 +157,28 @@ const translation = {
     learnMore: {
       en: 'Learn more...',
       ru: 'Узнать больше...',
+    },
+  },
+  documentation: {
+    selectAPI: {
+      en: 'Please select an API',
+      ru: 'Пожалуйста, выберите API',
+    },
+    documentation: {
+      en: 'Documentation',
+      ru: 'Документация',
+    },
+    description: {
+      en: 'A GraphQL schema provides a root type for each kind of operation.',
+      ru: 'Схема GraphQL предоставляет корневой тип для каждого вида операции.',
+    },
+    allSchemaType: {
+      en: 'All Schema Types',
+      ru: 'Все типы схемы',
+    },
+    rootTypes: {
+      en: 'Root Types',
+      ru: 'Корневые типы',
     },
   },
 };

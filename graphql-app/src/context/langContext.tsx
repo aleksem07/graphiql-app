@@ -1,6 +1,6 @@
 'use client';
 
-import { createContext, useEffect, useState } from 'react';
+import { createContext, useState } from 'react';
 
 export type AvailableLangs = 'en' | 'ru';
 
@@ -15,13 +15,7 @@ export const LangContext = createContext<LangContextType>({
 });
 
 export const LangState = ({ children }: { children: React.ReactNode }) => {
-  const [langFromLS, setLangFromLS] = useState<string | null>(null);
-  useEffect(() => {
-    setLangFromLS(localStorage.getItem('langGRAPHQL') || null);
-  }, []);
-  const [language, setLanguage] = useState<AvailableLangs>(
-    langFromLS === 'en' || langFromLS === 'ru' ? langFromLS : 'en'
-  );
+  const [language, setLanguage] = useState<AvailableLangs>('en');
   const updateLanguage = (language: AvailableLangs) => {
     setLanguage(language);
     localStorage.setItem('langGRAPHQL', language);

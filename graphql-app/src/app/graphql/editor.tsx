@@ -130,7 +130,7 @@ export const EditorQraphqlRequest = () => {
         >
           {API_OPTIONS.map(({ label, value }) => (
             <option key={value} value={value}>
-              {label}
+              {label === 'Custom API' ? translation.editor.customApi[language] : label}
             </option>
           ))}
         </select>
@@ -138,7 +138,7 @@ export const EditorQraphqlRequest = () => {
           <input
             className="w-full border border-gray-300 rounded p-2 text-black mt-2"
             type="text"
-            placeholder={translation.editor.customApi[language]}
+            placeholder={translation.editor.enterCustomApi[language]}
             value={api}
             onChange={handleCustomApiChange}
           />
@@ -162,7 +162,7 @@ export const EditorQraphqlRequest = () => {
             <FontAwesomeIcon icon={faFilePowerpoint} />
           </button>
         </div>
-        {isDocsOpened && <Documentation url={api} request={docsRequest} />}
+        {isDocsOpened && <Documentation url={api} request={docsRequest} lang={language} />}
         <div className="grid grid-cols-2 w-full gap-2 pb-2 col-end-auto">
           <div className="flex flex-col" data-testid="editor" onKeyDown={handleKeyDown}>
             <AceEditor

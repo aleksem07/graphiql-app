@@ -1,9 +1,14 @@
 'use client';
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import { LangContext } from '@/context/langContext';
 
 function LangSwitch() {
   const { language, updateLanguage } = useContext(LangContext);
+
+  useEffect(() => {
+    const langFromLS = localStorage.getItem('langGRAPHQL');
+    if (langFromLS === 'ru' || langFromLS === 'en') updateLanguage(langFromLS);
+  }, []);
 
   const toggleLanguage = () => {
     updateLanguage(language === 'en' ? 'ru' : 'en');
