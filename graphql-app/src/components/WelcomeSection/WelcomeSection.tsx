@@ -1,7 +1,7 @@
 import { SectionInfo } from '@/common/welcomePageData';
 
 export const WelcomeSection = ({ info }: { info: SectionInfo }) => (
-  <div className="flex-1 flex items-center justify-center flex-col m-10 pt-20">
+  <div className="flex-1 flex items-center justify-center flex-col m-2 pt-5">
     <h2 className="text-2xl font-bold pb-5">{info.title}</h2>
     <p>{info.content}</p>
     {

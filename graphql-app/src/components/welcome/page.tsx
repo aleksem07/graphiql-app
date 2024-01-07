@@ -12,9 +12,9 @@ export default function Welcome() {
     <>
       <div className="mx-auto max-w-[1280px] h-100vh">
         <div className="flex-1 flex items-start justify-start">
-          <div className="flex-1 flex items-center justify-center flex-col m-10 pt-20">
+          <div className="flex-1 flex items-center justify-center flex-col m-2">
             <h2 className="text-2xl font-bold">About Us</h2>
-            <div className="grid gap-4 grid-cols-1 pt-20 xs:grid-cols-3">
+            <div className="grid gap-4 grid-cols-1 pt-5 xs:grid-cols-3">
               {developers.map((developer) => (
                 <DeveloperCard key={developer.name} developer={developer} />
               ))}
