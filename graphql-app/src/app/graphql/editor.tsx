@@ -9,6 +9,15 @@ import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { setQuery } from '@/redux/editor/editorSlice';
 import { RootState } from '@/redux/store';
 import { parseJson } from '@/common/parse-json';
+import Documentation from '@/components/documentation/documentation';
+import { faFileText } from '@fortawesome/free-regular-svg-icons/faFileText';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faFilePowerpoint } from '@fortawesome/free-regular-svg-icons';
+
+export enum docsRequestEnum {
+  docs = 'docs',
+  print = 'print',
+}
 import { LangContext } from '@/context/langContext';
 import translation from '@/common/translation';
 
@@ -25,10 +34,13 @@ export const EditorQraphqlRequest = () => {
   const headers = parseJson(
     useAppSelector((state: RootState) => state.editorSlice.headers) || '{}'
   );
+  const [isDocsOpened, setIsDocsOpened] = useState(false);
+  const [docsRequest, setDocsRequest] = useState<docsRequestEnum>(docsRequestEnum.docs);
 
   const handleCustomApiChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (isCustomApi) {
       setApi(event.target.value);
+      setIsDocsOpened(false);
     }
   };
 
@@ -41,6 +53,7 @@ export const EditorQraphqlRequest = () => {
       setIsCustomApi(false);
       setApi(selectedApi);
     }
+    setIsDocsOpened(false);
   };
 
   const handleEditorChange = (value: string | undefined) => {
@@ -102,6 +115,11 @@ export const EditorQraphqlRequest = () => {
     }
   };
 
+  const handleDocsOpen = (button: docsRequestEnum) => {
+    setIsDocsOpened(!isDocsOpened);
+    setDocsRequest(button);
+  };
+
   return (
     <>
       <div className="w-full my-2" data-testid="api-select">
@@ -127,36 +145,55 @@ export const EditorQraphqlRequest = () => {
         )}
       </div>
 
-      <div className="grid grid-cols-2 w-full flex-1 gap-2 pb-2">
-        <div className="flex flex-col" data-testid="editor" onKeyDown={handleKeyDown}>
-          <AceEditor
-            fontSize={14}
-            setOptions={{
-              showLineNumbers: true,
-              tabSize: 2,
-            }}
-            placeholder={translation.editor.enterGraphqlQuery[language]}
-            width="100%"
-            height="60vh"
-            mode="graphqlschema"
-            className="flex-1 border border-gray-300 rounded text-black"
-            value={query}
-            onChange={handleEditorChange}
-          />
-
-          <EditorTools />
-
+      <div className="flex w-full flex-wrap sm:flex-nowrap relative content-start">
+        <div className="flex flex-wrap gap-1 sm:justify-center items-start sm:h-full pb-2 w-screen sm:w-fit h-fit">
           <button
-            className="bg-slate-700 hover:bg-slate-800 text-white font-bold py-2 px-4 rounded"
-            onClick={executeQuery}
-            data-testid="execute-button"
+            className="p-2 rounded border border-gray-300 hover:opacity-60 hover:bg-gray-200 cursor-pointer"
+            title="Show documentation"
+            onClick={() => handleDocsOpen(docsRequestEnum.docs)}
           >
-            {translation.editor.executeQuery[language]}
+            <FontAwesomeIcon icon={faFileText} />
+          </button>
+          <button
+            className="p-2 rounded border border-gray-300 hover:opacity-60 hover:bg-gray-200 cursor-pointer"
+            title="Print schema"
+            onClick={() => handleDocsOpen(docsRequestEnum.print)}
+          >
+            <FontAwesomeIcon icon={faFilePowerpoint} />
           </button>
         </div>
+        {isDocsOpened && <Documentation url={api} request={docsRequest} />}
+        <div className="grid grid-cols-2 w-full gap-2 pb-2 col-end-auto">
+          <div className="flex flex-col" data-testid="editor" onKeyDown={handleKeyDown}>
+            <AceEditor
+              fontSize={14}
+              setOptions={{
+                showLineNumbers: true,
+                tabSize: 2,
+              }}
+              placeholder={translation.editor.enterGraphqlQuery[language]}
+              width="100%"
+              height="60vh"
+              mode="graphqlschema"
+              className="flex-1 border border-gray-300 rounded text-black min-h-[50vh] sm:min-h-[60vh]"
+              value={query}
+              onChange={handleEditorChange}
+            />
 
-        <div className="flex-1 p-2 bg-gray-200 rounded" data-testid="response">
-          <pre className="whitespace-pre-wrap">{getResponse}</pre>
+            <EditorTools />
+
+            <button
+              className="bg-slate-700 hover:bg-slate-800 text-white font-bold py-2 px-4 rounded"
+              onClick={executeQuery}
+              data-testid="execute-button"
+            >
+              {translation.editor.executeQuery[language]}
+            </button>
+          </div>
+
+          <div className="flex-1 p-2 bg-gray-200 rounded" data-testid="response">
+            <pre className="whitespace-pre-wrap">{getResponse}</pre>
+          </div>
         </div>
       </div>
       <ToastContainer position="bottom-right" />
