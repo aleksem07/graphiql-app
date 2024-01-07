@@ -102,7 +102,6 @@ export const EditorQraphqlRequest = () => {
         toast.error(error.message);
       } else {
         toast.error(translation.error.unexpectedError[language]);
-        console.error(error);
       }
     }
   };
