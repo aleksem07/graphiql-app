@@ -1,9 +1,15 @@
+import { useContext } from 'react';
+import { LangContext } from '@/context/langContext';
 import { useAppSelector, useAppDispatch } from '@/redux/hooks';
 import { setQuery } from '@/redux/editor/editorSlice';
 import { RootState } from '@/redux/store';
 import { toast } from 'react-toastify';
+import translation from './translation';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faFileCode } from '@fortawesome/free-regular-svg-icons/faFileCode';
 
 export const Prettify = () => {
+  const { language } = useContext(LangContext);
   const dispatch = useAppDispatch();
   const query = useAppSelector((state: RootState) => state.editorSlice.query);
   const TAB_SIZE = 2;
@@ -68,17 +74,18 @@ export const Prettify = () => {
   const handleEditorChange = () => {
     const prettifyQuery = prettyLinesWithoutClosedBrackets?.concat(closedBracketsPretty || '');
     dispatch(setQuery({ query: prettifyQuery }));
-    toast.success('Prettified successfully!');
+    toast.success(translation.editor.prettifyCompleted[language]);
   };
 
   return (
     <button
+      className="p-2 rounded border border-gray-300 hover:opacity-60 hover:bg-gray-200 cursor-pointer"
+      title={translation.editor.prettifyTitle[language]}
       type="button"
       data-testid="prettify-button"
-      className="hover:bg-gray-300 py-2 px-4 mt-4"
       onClick={handleEditorChange}
     >
-      P
+      <FontAwesomeIcon icon={faFileCode} />
     </button>
   );
 };

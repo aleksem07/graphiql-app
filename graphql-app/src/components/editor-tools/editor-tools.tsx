@@ -7,7 +7,6 @@ import { RootState } from '@/redux/store';
 import { setHeaders, setVariables } from '@/redux/editor/editorSlice';
 import { LangContext } from '@/context/langContext';
 import translation from '@/common/translation';
-import { Prettify } from '@/common/prettify';
 
 export const EditorTools = () => {
   const { language } = useContext(LangContext);
@@ -90,7 +89,6 @@ export const EditorTools = () => {
           {button.name}
         </button>
       ))}
-      <Prettify />
 
       <AceEditor
         name="variables-editor"

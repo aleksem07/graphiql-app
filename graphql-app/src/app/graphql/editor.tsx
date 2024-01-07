@@ -20,6 +20,7 @@ export enum docsRequestEnum {
 }
 import { LangContext } from '@/context/langContext';
 import translation from '@/common/translation';
+import { Prettify } from '@/common/prettify';
 
 export const EditorQraphqlRequest = () => {
   const { language } = useContext(LangContext);
@@ -142,21 +143,22 @@ export const EditorQraphqlRequest = () => {
       </div>
 
       <div className="flex w-full flex-wrap sm:flex-nowrap relative content-start">
-        <div className="flex flex-wrap gap-1 sm:justify-center items-start sm:h-full pb-2 w-screen sm:w-fit h-fit">
+        <div className="flex flex-col px-2 flex-wrap gap-1 sm:justify-center items-start sm:h-full pb-2 w-screen sm:w-fit h-fit">
           <button
             className="p-2 rounded border border-gray-300 hover:opacity-60 hover:bg-gray-200 cursor-pointer"
-            title="Show documentation"
+            title={translation.documentation.title[language]}
             onClick={() => handleDocsOpen(docsRequestEnum.docs)}
           >
             <FontAwesomeIcon icon={faFileText} />
           </button>
           <button
             className="p-2 rounded border border-gray-300 hover:opacity-60 hover:bg-gray-200 cursor-pointer"
-            title="Print schema"
+            title={translation.documentation.schemaTitle[language]}
             onClick={() => handleDocsOpen(docsRequestEnum.print)}
           >
             <FontAwesomeIcon icon={faFilePowerpoint} />
           </button>
+          <Prettify />
         </div>
         {isDocsOpened && <Documentation url={api} request={docsRequest} lang={language} />}
         <div className="grid grid-cols-2 w-full gap-2 pb-2 col-end-auto">

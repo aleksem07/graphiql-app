@@ -144,6 +144,14 @@ const translation = {
       en: 'Hide',
       ru: 'Скрыть',
     },
+    prettifyTitle: {
+      en: 'Prettify',
+      ru: 'Форматировать',
+    },
+    prettifyCompleted: {
+      en: 'Prettified successfully!',
+      ru: 'Форматирование выполнено',
+    },
   },
   welcome: {
     aboutUs: {
@@ -160,6 +168,10 @@ const translation = {
     },
   },
   documentation: {
+    title: {
+      en: 'Show documentation',
+      ru: 'Показать документацию',
+    },
     selectAPI: {
       en: 'Please select an API',
       ru: 'Пожалуйста, выберите API',
@@ -171,6 +183,10 @@ const translation = {
     description: {
       en: 'A GraphQL schema provides a root type for each kind of operation.',
       ru: 'Схема GraphQL предоставляет корневой тип для каждого вида операции.',
+    },
+    schemaTitle: {
+      en: 'Print schema',
+      ru: 'Печать схемы',
     },
     allSchemaType: {
       en: 'All Schema Types',
