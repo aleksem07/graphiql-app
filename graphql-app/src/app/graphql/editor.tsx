@@ -20,6 +20,7 @@ export enum docsRequestEnum {
 }
 import { LangContext } from '@/context/langContext';
 import translation from '@/common/translation';
+import { Prettify } from '@/common/prettify';
 
 export const EditorQraphqlRequest = () => {
   const { language } = useContext(LangContext);
@@ -36,6 +37,18 @@ export const EditorQraphqlRequest = () => {
   );
   const [isDocsOpened, setIsDocsOpened] = useState(false);
   const [docsRequest, setDocsRequest] = useState<docsRequestEnum>(docsRequestEnum.docs);
+  const ICON_BUTTONS = [
+    {
+      name: 'docs',
+      title: translation.documentation.title[language],
+      icon: faFileText,
+    },
+    {
+      name: 'print',
+      title: translation.documentation.schemaTitle[language],
+      icon: faFilePowerpoint,
+    },
+  ];
 
   const handleCustomApiChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (isCustomApi) {
@@ -57,11 +70,7 @@ export const EditorQraphqlRequest = () => {
   };
 
   const handleEditorChange = (value: string | undefined) => {
-    if (value) {
-      dispatch(setQuery({ query: value }));
-    } else {
-      dispatch(setQuery({ query: '' }));
-    }
+    value ? dispatch(setQuery({ query: value })) : dispatch(setQuery({ query: '' }));
   };
 
   const executeQuery = async () => {
@@ -85,18 +94,18 @@ export const EditorQraphqlRequest = () => {
         body: JSON.stringify({ query, variables }),
       });
 
+      const data = await response.json();
+
       if (!response.ok) {
-        const data = await response.json();
-        const errorCode = await response.status;
+        const errorCode = response.status;
         const errorMessage = data.errors
-          .map((error: { message: string }) => error.message)
+          .map((error: { message: string }) => error.message || 'Unknown error')
           .join(', ');
         toast.error(`${translation.error.statusCode[language]} ${errorCode}\n${errorMessage}`);
         setResponse(JSON.stringify(data, null, 2));
         return;
       }
 
-      const data = await response.json();
       setResponse(JSON.stringify(data, null, 2));
       toast.success(translation.editor.querySuccess[language]);
     } catch (error) {
@@ -105,7 +114,6 @@ export const EditorQraphqlRequest = () => {
         toast.error(error.message);
       } else {
         toast.error(translation.error.unexpectedError[language]);
-        console.error(error);
       }
     }
   };
@@ -146,21 +154,19 @@ export const EditorQraphqlRequest = () => {
       </div>
 
       <div className="flex w-full flex-wrap sm:flex-nowrap relative content-start">
-        <div className="flex flex-wrap gap-1 sm:justify-center items-start sm:h-full pb-2 w-screen sm:w-fit h-fit">
-          <button
-            className="p-2 rounded border border-gray-300 hover:opacity-60 hover:bg-gray-200 cursor-pointer"
-            title="Show documentation"
-            onClick={() => handleDocsOpen(docsRequestEnum.docs)}
-          >
-            <FontAwesomeIcon icon={faFileText} />
-          </button>
-          <button
-            className="p-2 rounded border border-gray-300 hover:opacity-60 hover:bg-gray-200 cursor-pointer"
-            title="Print schema"
-            onClick={() => handleDocsOpen(docsRequestEnum.print)}
-          >
-            <FontAwesomeIcon icon={faFilePowerpoint} />
-          </button>
+        <div className="flex flex-col px-2 flex-wrap gap-1 sm:justify-center items-start sm:h-full pb-2 w-screen sm:w-fit h-fit">
+          {ICON_BUTTONS.map(({ name, title, icon }) => (
+            <button
+              key={name}
+              className="p-2 rounded border border-gray-300 hover:opacity-60 hover:bg-gray-200 cursor-pointer"
+              title={title}
+              onClick={() => handleDocsOpen(name as docsRequestEnum)}
+            >
+              <FontAwesomeIcon icon={icon} />
+            </button>
+          ))}
+
+          <Prettify />
         </div>
         {isDocsOpened && <Documentation url={api} request={docsRequest} lang={language} />}
         <div className="grid grid-cols-2 w-full gap-2 pb-2 col-end-auto">
@@ -193,11 +199,10 @@ export const EditorQraphqlRequest = () => {
 
           <AceEditor
             className="flex-1 border border-gray-300 rounded text-black"
-            data-testid="response"
             setOptions={{ showLineNumbers: false }}
             width="100%"
             height="100%"
-            mode="json"
+            mode="graphqlschema"
             value={getResponse}
             readOnly
           />

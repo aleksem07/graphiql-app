@@ -1,5 +1,5 @@
 'use client';
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useState } from 'react';
 import AceEditor from 'react-ace';
 import 'ace-builds/src-noconflict/mode-graphqlschema';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
@@ -16,7 +16,6 @@ export const EditorTools = () => {
   const [isHeaders, setIsHeaders] = useState(false);
   const CLOSE_EDITOR_TOOLS = '0vh';
   const OPEN_EDITOR_TOOLS = '15vh';
-  const [heightVariablesEditor, setHeightEditorTools] = useState(CLOSE_EDITOR_TOOLS);
   const BUTTONS = [
     {
       name: translation.editor.variables[language],
@@ -37,54 +36,41 @@ export const EditorTools = () => {
   const variables = useAppSelector((state: RootState) => state.editorSlice.variables);
   const headers = useAppSelector((state: RootState) => state.editorSlice.headers);
 
-  useEffect(() => {
-    if (isOpen) {
-      setHeightEditorTools(OPEN_EDITOR_TOOLS);
-    } else {
-      setHeightEditorTools(CLOSE_EDITOR_TOOLS);
-    }
-  }, [isOpen]);
+  const heightVariablesEditor = isOpen ? OPEN_EDITOR_TOOLS : CLOSE_EDITOR_TOOLS;
+
+  const buttonHandlers: Record<string, () => void> = {
+    variables: () => {
+      setIsOpen(true);
+      setIsVariables(true);
+      setIsHeaders(false);
+    },
+    headers: () => {
+      setIsOpen(true);
+      setIsHeaders(true);
+      setIsVariables(false);
+    },
+    'show-hide': () => {
+      setIsOpen(!isOpen);
+      !isHeaders && setIsVariables(true);
+    },
+  };
 
   const handleButtonChange = (evt: React.MouseEvent<HTMLButtonElement>) => {
     evt.preventDefault();
-    switch (evt.currentTarget.id) {
-      case 'variables': {
-        setIsOpen(true);
-        setIsVariables(true);
-        setIsHeaders(false);
-        break;
-      }
-      case 'headers': {
-        setIsOpen(true);
-        setIsHeaders(true);
-        setIsVariables(false);
-        break;
-      }
-      case 'show-hide': {
-        setIsOpen(!isOpen);
-        !isHeaders && setIsVariables(true);
-        break;
-      }
-      default: {
-        return;
-      }
+    const buttonId = evt.currentTarget.id;
+    const buttonHandler = buttonHandlers[buttonId];
+    if (buttonHandler) {
+      buttonHandler();
     }
   };
 
   const handleEditorChange = (value: string | undefined) => {
-    if (value) {
-      if (isVariables) {
-        dispatch(setVariables({ variables: value }));
-      } else if (isHeaders) {
-        dispatch(setHeaders({ headers: value }));
-      }
-    } else {
-      if (isVariables) {
-        dispatch(setVariables({ variables: '' }));
-      } else if (isHeaders) {
-        dispatch(setHeaders({ headers: '' }));
-      }
-    }
+    const dispatchValue = value ? value : '';
+    dispatch(
+      isVariables
+        ? setVariables({ variables: dispatchValue })
+        : setHeaders({ headers: dispatchValue })
+    );
   };
 
   return (
