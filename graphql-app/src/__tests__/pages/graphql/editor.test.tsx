@@ -123,4 +123,26 @@ describe('EditorQraphqlRequest', () => {
       throw new Error('API Select element not found');
     }
   });
+
+  it('displays error toast on failed API request', async () => {
+    render(
+      <Providers>
+        <EditorQraphqlRequest />
+      </Providers>
+    );
+
+    const executeButton = screen.getByTestId('execute-button');
+    const toastErrorSpy = jest.spyOn(toast, 'error');
+
+    global.fetch = jest.fn().mockResolvedValue({
+      status: 500,
+      json: () => Promise.resolve({ errors: [{ message: 'Error message' }] }),
+    });
+
+    fireEvent.click(executeButton);
+
+    waitFor(() => {
+      expect(toastErrorSpy).toHaveBeenCalledWith('Error: 500\nError message');
+    });
+  });
 });
