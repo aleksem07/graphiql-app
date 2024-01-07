@@ -20,7 +20,8 @@ export default function NavLinks() {
 
   useEffect(() => {
     if (loading) return;
-  }, [loading]);
+    if (!user) handleLogout();
+  }, [loading, user]);
 
   const [isMobile, setIsMobile] = useState(false);
 
