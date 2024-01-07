@@ -72,6 +72,22 @@ export const Prettify = () => {
     .join('\n');
 
   const handleEditorChange = () => {
+    const openingBracesCount = (query?.match(/{/g) || []).length;
+    const closingBracesCount = (query?.match(/}/g) || []).length;
+    const openingParenthesesCount = (query?.match(/\(/g) || []).length;
+    const closingParenthesesCount = (query?.match(/\)/g) || []).length;
+    const openingSquareBracketsCount = (query?.match(/\[/g) || []).length;
+    const closingSquareBracketsCount = (query?.match(/]/g) || []).length;
+
+    if (
+      openingBracesCount !== closingBracesCount ||
+      openingParenthesesCount !== closingParenthesesCount ||
+      openingSquareBracketsCount !== closingSquareBracketsCount
+    ) {
+      toast.error(translation.error.prettifyError[language]);
+      return null;
+    }
+
     const prettifyQuery = prettyLinesWithoutClosedBrackets?.concat(closedBracketsPretty || '');
     dispatch(setQuery({ query: prettifyQuery }));
     toast.success(translation.editor.prettifyCompleted[language]);

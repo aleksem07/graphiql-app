@@ -64,6 +64,10 @@ const translation = {
       en: 'Error',
       ru: 'Ошибка',
     },
+    prettifyError: {
+      en: 'Error: syntax error in query',
+      ru: 'Ошибка: синтаксическая ошибка в запросе',
+    },
   },
   auth: {
     email: {
